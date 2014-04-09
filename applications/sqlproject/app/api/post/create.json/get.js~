@@ -1,0 +1,5 @@
+module.exports = function(client, callback) {
+        client.context.data = 'Client query: ' + JSON.stringify(client.query);
+	callback();
+}
+

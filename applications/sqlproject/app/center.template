@@ -1,0 +1,10 @@
+Функции:
+@[links]@
+<div>
+    <ul>
+        <li>@.value@</li>
+    </ul>
+</div>
+@[/links]@
+
+<a href="js/my/all.js">Просмотр кода скрипта на запросы</a>

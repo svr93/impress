@@ -6,12 +6,12 @@ technopark-db-api
 ##Forum
 * [create](./doc/forum/create.md) +++++
 * [details](./doc/forum/details.md) +++++
-* [listPosts](./doc/forum/listPosts.md)
+* [listPosts](./doc/forum/listPosts.md) !VERY GOOD!
 * [listThreads](./doc/forum/listThreads.md)
 * [listUsers](./doc/forum/listUsers.md)
 
 ##Post
-* [create](./doc/post/create.md)
+* [create](./doc/post/create.md) yes!!!
 * [details](./doc/post/details.md)
 * [list](./doc/post/list.md)
 * [remove](./doc/post/remove.md)
@@ -31,7 +31,7 @@ technopark-db-api
 
 ##Thread
 * [close](./doc/thread/close.md)
-* [create](./doc/thread/create.md)
+* [create](./doc/thread/create.md) yes!!!
 * [details](./doc/thread/details.md)
 * [list](./doc/thread/list.md)
 * [listPosts](./doc/thread/listPosts.md)

@@ -1,8 +1,0 @@
-2014-04-01T06:14:28.533Z	Master(6811/C1N0)	1451ms	127.0.0.1	GET	http://127.0.0.1/setup	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/32.0.1700.107 Chrome/32.0.1700.107 Safari/537.36
-2014-04-01T06:34:48.607Z	Master(6950/C1N0)	1392ms	127.0.0.1	GET	http://127.0.0.1/setup	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/32.0.1700.107 Chrome/32.0.1700.107 Safari/537.36
-2014-04-01T07:02:12.415Z	Master(7335/C1N0)	13887ms	SELECT * FROM ask_shamsheev.ask_answer
-2014-04-01T07:02:22.844Z	Master(7335/C1N0)	21746ms	127.0.0.1	POST	http://127.0.0.1/dbmi/grid/data.json	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/32.0.1700.107 Chrome/32.0.1700.107 Safari/537.36
-2014-04-01T07:02:22.858Z	Master(7335/C1N0)	16658ms	SHOW FULL COLUMNS FROM ask_shamsheev.ask_answer
-2014-04-01T07:02:22.875Z	Master(7335/C1N0)	21351ms	127.0.0.1	GET	http://127.0.0.1/dbmi/grid/columns.json	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/32.0.1700.107 Chrome/32.0.1700.107 Safari/537.36
-2014-04-01T07:02:38.593Z	Master(7335/C1N0)	15251ms	SELECT * FROM ask_shamsheev.ask_answer
-2014-04-01T07:02:47.453Z	Master(7335/C1N0)	22499ms	127.0.0.1	POST	http://127.0.0.1/dbmi/grid/data.json	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/32.0.1700.107 Chrome/32.0.1700.107 Safari/537.36

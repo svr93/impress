@@ -1,14 +1,28 @@
 // /home/vladimir/impress_server/applications/sqlproject/app/js/my/all.js
-
+////
+function threadCreate() {
+    var data = {
+        'forum': 'forumwithsufficientlylargename',
+        'title': 'DEPPPPP',
+        'isClosed': true,
+        'user': 'john1@mail.ru',
+        'date': '2014-01-01 00:00:01',
+        'message': 'GO',
+        'slug': 'w',
+        'isDeleted': true
+    }
+    sendPost ("db/api/s.stupnikov/thread/create/", data);
+}
+////
 function postCreate () {
     var data = {
         'isApproved': true,
-        'user': 'example2@mail.ru',
+        'user': 'john1@mail.ru',
         'date': '2014-01-01 00:00:01',
-        'message': 'my message 1',
-        'isSpam': false,
+        'message': 'AA',
+        //'isSpam': false,
         'isHighlighted': true,
-        'thread': 297,
+        'thread': 3,
         'forum': 'forumwithsufficientlylargename',
         'isDeleted': false,
         'isEdited': true
@@ -18,8 +32,8 @@ function postCreate () {
 
 function forumListPosts () {
     var data = {
-        'related': ['thread'],
-        'since': '2014-01-02 00:00:00',
+        'related': ['thread', 'user'],
+        'since': '2000-01-02 00:00:00',
         'limit': 2,
         'order': 'asc',
         'forum': 'forumwithsufficientlylargename'

@@ -45,7 +45,7 @@ module.exports = function(client, callback) {
 
         var userQuery = 'SELECT * FROM User WHERE email IN ( \
         SELECT user FROM Post WHERE forum=' + '"' 
-        + client.query['forum'] + '")' + since_id + ' ORDER BY id ' 
+        + client.query['forum'] + ')' + since_id + ' ORDER BY id ' 
         + client.query['order'] + limit;
 
         connection.query(userQuery, [], function (err, results) {

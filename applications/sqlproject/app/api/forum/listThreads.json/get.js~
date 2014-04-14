@@ -5,10 +5,10 @@ module.exports = function(client, callback) {
     if (!client.query['related']) {
         client.query['related'] = '[]';
     }
-    var entityArr = ['thread', 'forum', 'user'];
+    var entityArr = ['forum', 'user'];
     var connection = impress.conn;
 
-    selectPosts();
+    selectThreads();
 
     function getMoreUserInfo(user, extraUserInfoArr, key, clbk) {
         if (key === undefined) {
@@ -37,18 +37,6 @@ module.exports = function(client, callback) {
         }
     }                
 
-    function getMoreThreadInfo(thread, clbk) {
-        var param = thread['id'];
-        connection.queryRow('SELECT COUNT(*) FROM Post WHERE thread=?', [param], function(err, row) {
-            if (err) {
-                sendError();
-            } else {
-                thread['posts'] = row['COUNT(*)'];
-                clbk();
-            }
-        });        
-    }
-    
     function getRelated(results, entity) {
         if (entity === undefined) {
             send(results);
@@ -57,10 +45,7 @@ module.exports = function(client, callback) {
         } else {
             var userQuery = "";
 
-            if (entity == 'thread') {
-                userQuery = 'SELECT * FROM Thread LEFT OUTER JOIN Threadrating \
-                ON Thread.id=Threadrating.id WHERE Thread.id=?';
-            } else if (entity == 'forum') {
+            if (entity == 'forum') {
                 userQuery = 'SELECT * FROM Forum WHERE short_name=?';
             } else if (entity == 'user') {
                 userQuery = 'SELECT * FROM User WHERE email=?';
@@ -73,9 +58,7 @@ module.exports = function(client, callback) {
                         sendError();
                     } else {
                         elem[entity] = row;
-                        if (entity == 'thread') {
-                            getMoreThreadInfo(elem[entity], clbk);
-                        } else if (entity == 'user') {
+                        if (entity == 'user') {
                             var extraUserInfoArr = ['followers', 'following', 'subscriptions'];
                             getMoreUserInfo(elem[entity], extraUserInfoArr, extraUserInfoArr.pop(), clbk);
                         } else {
@@ -92,7 +75,7 @@ module.exports = function(client, callback) {
         }
     }
 
-    function selectPosts() {
+    function selectThreads() {
         var since = "";
         if (client.query['since']) {
             since = ' AND date >= ' + '"' + client.query['since'] + '"';
@@ -102,8 +85,8 @@ module.exports = function(client, callback) {
             limit = ' LIMIT ' + client.query['limit'];
         }
 
-        var userQuery = 'SELECT * FROM Post LEFT OUTER JOIN Postrating \
-        ON Post.id=Postrating.id WHERE forum=' + '"' 
+        var userQuery = 'SELECT * FROM Thread LEFT OUTER JOIN Threadrating \
+        ON Thread.id=Threadrating.id WHERE forum=' + '"' 
         + client.query['forum'] + '"' + since + ' ORDER BY date ' + client.query['order'] + limit;
 
         connection.query(userQuery, [], function (err, results) {
@@ -111,7 +94,8 @@ module.exports = function(client, callback) {
             if (err) {
                 sendError();
             } else {
-                getRelated(results, entityArr.pop());
+                var mainData = results;
+                //getRelated(results, entityArr.pop());
             }
         });
     }

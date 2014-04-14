@@ -30,6 +30,27 @@ function postCreate () {
     sendPost ("db/api/s.stupnikov/post/create/", data);
 }
 
+function forumListUsers() {
+    var data = {
+        'since_id': 1,
+        'limit' : 2,
+        'order': 'asc',
+        'forum': 'forumwithsufficientlylargename'
+    }
+    sendGet ("db/api/s.stupnikov/forum/listUsers/", data);
+}
+
+function forumListThreads() {
+    var data = {
+        'related': ['user', 'forum'],
+        'since': '2000-01-02 00:00:00',
+        'limit': 2,
+        'order': 'asc',
+        'forum': 'forumwithsufficientlylargename'
+    }
+    sendGet ("db/api/s.stupnikov/forum/listThreads/", data);
+}
+
 function forumListPosts () {
     var data = {
         'related': ['thread', 'user', 'forum'],

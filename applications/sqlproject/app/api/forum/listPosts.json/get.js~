@@ -104,7 +104,7 @@ module.exports = function(client, callback) {
 
         var userQuery = 'SELECT * FROM Post LEFT OUTER JOIN Postrating \
         ON Post.id=Postrating.id WHERE forum=' + '"' 
-        + client.query['forum'] + '"' + since + limit;
+        + client.query['forum'] + '"' + since + ' ORDER BY date ' + client.query['order'] + limit;
 
         connection.query(userQuery, [], function (err, results) {
             console.dir({query:results});

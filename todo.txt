@@ -7,8 +7,8 @@ technopark-db-api
 * [create](./doc/forum/create.md) +++++
 * [details](./doc/forum/details.md) +++++
 * [listPosts](./doc/forum/listPosts.md) !VERY GOOD!
-* [listThreads](./doc/forum/listThreads.md)
-* [listUsers](./doc/forum/listUsers.md)
+* [listThreads](./doc/forum/listThreads.md) !VERY GOOD!
+* [listUsers](./doc/forum/listUsers.md) !VERY GOOD!
 
 ##Post
 * [create](./doc/post/create.md) yes!!!

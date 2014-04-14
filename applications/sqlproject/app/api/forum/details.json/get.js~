@@ -4,7 +4,9 @@ module.exports = function(client, callback) {
     if (!client.query['related']) {
         client.query['related'] = '[]';
     }
-    selectForum();
+    console.log(client.url);
+    db.drivers.mysql.createQuery('SELECT * FROM Forum', [], function (err, row) {console.log('1');});
+    //selectForum();
     
     function selectForum() {
         connection.queryRow('SELECT * FROM Forum WHERE short_name=?', [client.query['forum']],

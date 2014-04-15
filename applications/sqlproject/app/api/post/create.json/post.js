@@ -24,19 +24,23 @@ module.exports = function(client, callback) {
     insert();
 
     function insert() {
-        connection.insert('Post', {
-            date: data.date,
-            forum: data.forum,
-            parent: data.parent,
-            isApproved: data.isApproved,
-            isDeleted: data.isDeleted,
-            isEdited: data.isEdited,
-            isHighlighted: data.isHighlighted,
-            isSpam: data.isSpam,
-            message: data.message,
-            thread: data.thread,
-            user: data.user
-        }, function(err, results) {
+        connection.query('INSERT INTO Post (date, forum, parent, \
+        isApproved, isDeleted, isEdited, isHighlighted, isSpam, \
+        message, thread, user) \
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+            data.date,
+            data.forum,
+            data.parent,
+            data.isApproved,
+            data.isDeleted,
+            data.isEdited,
+            data.isHighlighted,
+            data.isSpam,
+            data.message,
+            data.thread,
+            data.user
+        ],
+        function (err, results) {
             console.dir({insert:results});
             if (err) {
                 sendError();
@@ -53,15 +57,26 @@ module.exports = function(client, callback) {
             if (err) {
                 sendError();
             } else {
-                selectPost(row);
+                startRating(row['MAX(id)']);
             }
         });
     }
 
-    function selectPost(row) {
+    function startRating(id) {
+        connection.query('INSERT INTO Postrating (id) VALUES (?)', [id],
+        function (err, results) {
+            console.dir({insert:results});
+            if (err) {
+                sendError();
+            } else {
+                selectPost(id);
+            }
+        });
+    }
+
+    function selectPost(id) {
         connection.queryRow('SELECT * FROM Post WHERE id=?',
-        [row['MAX(id)']],
-        function(err, row) {
+        [id], function(err, row) {
             console.dir({queryRow:row});
             if (err) {
                 sendError();
@@ -74,19 +89,7 @@ module.exports = function(client, callback) {
     function send(row) {
         var response = {
             code: 0,
-            response: {
-                date: row['date'],
-                forum: row['forum'],
-                id: row['id'],
-                isApproved: row['isApproved'],
-                isDeleted: row['isDeleted'],
-                isEdited: row['isEdited'],
-                isHighlighted: row['isHighlighted'],
-                isSpam: row['isSpam'],
-                message: row['message'],
-                thread: row['thread'],
-                user: row['user']
-            }
+            response: row
         }
         client.context.data = JSON.stringify(response);
         callback();

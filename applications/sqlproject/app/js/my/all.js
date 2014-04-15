@@ -1,5 +1,5 @@
 // /home/vladimir/impress_server/applications/sqlproject/app/js/my/all.js
-////
+
 function threadCreate() {
     var data = {
         'forum': 'forumwithsufficientlylargename',
@@ -13,14 +13,14 @@ function threadCreate() {
     }
     sendPost ("db/api/s.stupnikov/thread/create/", data);
 }
-////
+
 function postCreate () {
     var data = {
         'isApproved': true,
         'user': 'john1@mail.ru',
         'date': '2014-01-01 00:00:01',
-        'message': 'AA',
-        //'isSpam': false,
+        'message': 'HEEEEEE',
+        'isSpam': false,
         'isHighlighted': true,
         'thread': 3,
         'forum': 'forumwithsufficientlylargename',
@@ -51,6 +51,16 @@ function forumListThreads() {
     sendGet ("db/api/s.stupnikov/forum/listThreads/", data);
 }
 
+function postList() {
+    var data = {
+        'since': '2000-01-02 00:00:00',
+        'limit': 2,
+        'order': 'asc',
+        'thread': 3
+    }
+    sendGet ("db/api/s.stupnikov/post/list/", data);
+}
+
 function forumListPosts () {
     var data = {
         'related': ['thread', 'user', 'forum'],
@@ -68,6 +78,14 @@ function forumDetails () {
         'forum': 'foamwithsufficientlylargename'
     }
     sendGet ("db/api/s.stupnikov/forum/details/", data);
+}
+
+function postDetails() {
+    var data = {
+        'related': [],
+        'post': 10
+    }
+    sendGet ("db/api/s.stupnikov/post/details/", data);
 }
 
 function userDetails () {
@@ -118,7 +136,6 @@ function sendGet (url, data) {
     xhr.onreadystatechange = function () {
        if (xhr.readyState == 4 && xhr.status == 200) {
            console.log(JSON.parse(this.response));
-             //console.log('200');
        }
     }			
     xhr.open('GET', url + params, true);

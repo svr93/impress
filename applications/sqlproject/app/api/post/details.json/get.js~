@@ -95,7 +95,7 @@ module.exports = function(client, callback) {
 
     function selectPost() {
         connection.query('SELECT * FROM Post LEFT OUTER JOIN Postrating \
-        ON Post.id=Postrating.id WHERE Post.id=?',
+        ON Post.id=Postrating.id WHERE id=?',
         [client.query['post']], function (err, results) {
             console.dir({query:results});
             if (err) {

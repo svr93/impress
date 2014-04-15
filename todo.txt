@@ -11,9 +11,9 @@ technopark-db-api
 * [listUsers](./doc/forum/listUsers.md) !VERY GOOD!
 
 ##Post
-* [create](./doc/post/create.md) yes!!!
-* [details](./doc/post/details.md)
-* [list](./doc/post/list.md)
+* [create](./doc/post/create.md) !VERY GOOD!
+* [details](./doc/post/details.md) !VERY GOOD!
+* [list](./doc/post/list.md) !VERY GOOD!
 * [remove](./doc/post/remove.md)
 * [restore](./doc/post/restore.md)
 * [update](./doc/post/update.md)

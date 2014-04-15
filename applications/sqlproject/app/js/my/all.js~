@@ -19,7 +19,7 @@ function postCreate () {
         'isApproved': true,
         'user': 'john1@mail.ru',
         'date': '2014-01-01 00:00:01',
-        'message': 'AA',
+        'message': 'HEEEEEE',
         //'isSpam': false,
         'isHighlighted': true,
         'thread': 3,
@@ -31,7 +31,14 @@ function postCreate () {
 }
 
 function forumListUsers() {
-
+    var data = {
+        'since_id': 1,
+        'limit' : 2,
+        'order': 'asc',
+        'forum': 'forumwithsufficientlylargename'
+    }
+    sendGet ("db/api/s.stupnikov/forum/listUsers/", data);
+}
 
 function forumListThreads() {
     var data = {
@@ -42,6 +49,16 @@ function forumListThreads() {
         'forum': 'forumwithsufficientlylargename'
     }
     sendGet ("db/api/s.stupnikov/forum/listThreads/", data);
+}
+
+function postList() {
+    var data = {
+        'since': '2000-01-02 00:00:00',
+        'limit': 2,
+        'order': 'asc',
+        'thread': 3
+    }
+    sendGet ("db/api/s.stupnikov/post/list/", data);
 }
 
 function forumListPosts () {
@@ -61,6 +78,14 @@ function forumDetails () {
         'forum': 'foamwithsufficientlylargename'
     }
     sendGet ("db/api/s.stupnikov/forum/details/", data);
+}
+
+function postDetails() {
+    var data = {
+        'related': [],
+        'post': 10
+    }
+    sendGet ("db/api/s.stupnikov/post/details/", data);
 }
 
 function userDetails () {

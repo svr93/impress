@@ -38,7 +38,8 @@ module.exports = function(client, callback) {
                     "<a onclick=threadSubscribe();>Thread.subscribe</a>",
                     "<a onclick=threadUnsubscribe();>Thread.unsubscribe</a>",
                     "<a onclick=threadUpdate();>Thread.update</a>",
-                    "<a onclick=threadVote();>Thread.vote</a>"
+                    "<a onclick=threadVote();>Thread.vote</a>",
+                    "<a onclick=clearDatabase();>CLEAR</a>"
 		],
 		session: client.session
 	};

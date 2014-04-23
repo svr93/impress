@@ -1,61 +1,67 @@
 module.exports = function(client, callback) {
-    var code = 0;
+
     var connection = impress.conn;
-    select();
 
-    function select() {
-        connection.queryRow('SELECT * FROM User WHERE email=?', [client.query['user']], function(err, row) {
-            console.dir({queryRow:row});
-            var userInfo = row;
-            if (err !== null) code = 1;
+    selectUser();
 
-            connection.queryCol('SELECT email FROM Followers AS f INNER JOIN User AS u ON\
-            (f.follower_id = u.id) WHERE target_id=?', [userInfo['id']], function(err, arr) {
-                console.dir({queryCol:arr});
-                var followers_arr = arr;
-                if (err !== null) code = 1;
-
-                connection.queryCol('SELECT email FROM Followers AS f INNER JOIN User AS u ON\
-                (f.target_id = u.id) WHERE follower_id=?', [userInfo['id']], function(err, arr) {
-                    console.dir({queryCol:arr});
-                    var following_arr = arr;
-                    if (err !== null) code = 1;
-
-                    connection.queryCol('SELECT thread_id FROM Subscribe WHERE user_id=?',
-                    [userInfo['id']], function(err, arr) {
-                        console.dir({queryCol:arr});
-                        var subscribe_arr = arr;
-                        if (err !== null) code = 1;
-                        send(userInfo, followers_arr, following_arr, subscribe_arr);
-                    });
-                });
+    function getMoreUserInfo(user, extraUserInfoArr, key) {
+        if (key === undefined) {
+            send(user);
+        } else {
+            var userQuery = "";
+            
+            if (key == 'followers') {
+                userQuery = "SELECT email FROM User INNER JOIN Followers ON \
+                User.id=Followers.follower_id WHERE target_id=" + user['id'];
+            } else if (key == 'following') {
+                userQuery = "SELECT email FROM User INNER JOIN Followers ON \
+                User.id=Followers.target_id WHERE follower_id=" + user['id'];
+            } else if (key == 'subscriptions') {
+                userQuery = "SELECT thread_id FROM Subscribe \
+                WHERE user_id=" + user['id'];
+            }
+            connection.queryCol(userQuery, [], function(err, arr) {
+                if (err) {
+                    sendError();
+                } else {
+                    user[key] = arr;
+                    getMoreUserInfo(user, extraUserInfoArr,
+                    extraUserInfoArr.pop());
+                }
             });
+        }
+    }                
+    
+    function selectUser() {
+        connection.queryRow('SELECT * FROM User WHERE email=?',
+        [client.query['user']], function (err, row) {
+            console.dir({queryRow:row});
+            if (err) {
+                sendError();
+            } else {
+                var extraUserInfoArr = 
+                ['followers', 'following', 'subscriptions'];
+
+                getMoreUserInfo(row, extraUserInfoArr, 
+                extraUserInfoArr.pop());
+            }
         });
     }
-
-    function send(userInfo, followers_arr, following_arr, subscribe_arr) {
-        var response;
-        if (code == 0) {
-            response = {
-                code: code,
-                response: {
-                    about: userInfo['about'],
-                    email: userInfo['email'],
-                    followers: followers_arr,
-                    following: following_arr,
-                    id: userInfo['id'],
-                    isAnonymous: userInfo['isAnonymous'],
-                    name: userInfo['name'],
-                    subscriptions: subscribe_arr,
-                    username: userInfo['username']                             
-                }
-            }
-        } else {
-            response = {
-                code: code,
-                message: 'Error!'
-            }
+      
+    function send(results) {
+        var response = {
+            code: 0,
+            response: results
         }
+        client.context.data = JSON.stringify(response);
+        callback();
+    }
+
+    function sendError() {
+        var response = {
+            code: 1,
+            message: 'Error!'
+        } 
         client.context.data = JSON.stringify(response);
         callback();
     }

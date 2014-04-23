@@ -1,10 +1,11 @@
 DROP DATABASE forums;
-CREATE DATABASE forums;
+CREATE DATABASE forums CHARACTER SET 'UTF8';
 USE forums;
+SET NAMES 'UTF8';
 
-CREATE TABLE User ( 
+CREATE TABLE User (
 	id MEDIUMINT AUTO_INCREMENT, 
-	about VARCHAR(40) NOT NULL, 
+	about VARCHAR(40), 
 	email VARCHAR(40) NOT NULL UNIQUE, 
 	isAnonymous BOOLEAN DEFAULT False, 
 	name VARCHAR(40), 
@@ -13,40 +14,40 @@ CREATE TABLE User (
 	KEY(email)
 );
 
-CREATE TABLE Forum ( 
+CREATE TABLE Forum (
 	id MEDIUMINT AUTO_INCREMENT, 
-	name VARCHAR(80) NOT NULL, 
+	name VARCHAR(80) NOT NULL UNIQUE, 
 	short_name VARCHAR(40) NOT NULL UNIQUE, 
 	user VARCHAR(40) NOT NULL, 
 	PRIMARY KEY(id),
 	FOREIGN KEY(user) REFERENCES User(email)
 );
 
-CREATE TABLE Thread ( 
+CREATE TABLE Thread (
 	id MEDIUMINT AUTO_INCREMENT, 
 	forum VARCHAR(40) NOT NULL, 
 	isClosed BOOLEAN NOT NULL DEFAULT False, 
-	isDeleted BOOLEAN DEFAULT False, 
+	isDeleted BOOLEAN NOT NULL DEFAULT False, 
 	message VARCHAR(500) NOT NULL, 
 	slug VARCHAR(40) NOT NULL, 
 	title VARCHAR(80) NOT NULL, 
 	user VARCHAR(40) NOT NULL,
-	date TIMESTAMP NOT NULL,
+	date DATETIME NOT NULL,
 	PRIMARY KEY(id),
 	FOREIGN KEY(forum) REFERENCES Forum(short_name),
 	FOREIGN KEY(user) REFERENCES User(email)
 );
 
-CREATE TABLE Post ( 
+CREATE TABLE Post (
 	id MEDIUMINT AUTO_INCREMENT, 
-	date TIMESTAMP NOT NULL, 
+	date DATETIME NOT NULL, 
 	forum VARCHAR(40) NOT NULL, 
 	parent MEDIUMINT, 
-	isApproved BOOLEAN DEFAULT False, 
-	isDeleted BOOLEAN DEFAULT False, 
-	isEdited BOOLEAN DEFAULT False, 
-	isHighlighted BOOLEAN DEFAULT False, 
-	isSpam BOOLEAN DEFAULT False, 
+	isApproved BOOLEAN NOT NULL DEFAULT False, 
+	isDeleted BOOLEAN NOT NULL DEFAULT False, 
+	isEdited BOOLEAN NOT NULL DEFAULT False, 
+	isHighlighted BOOLEAN NOT NULL DEFAULT False, 
+	isSpam BOOLEAN NOT NULL DEFAULT False, 
 	message VARCHAR(500) NOT NULL, 
 	thread MEDIUMINT NOT NULL, 
 	user VARCHAR(40) NOT NULL, 
@@ -66,13 +67,17 @@ CREATE TABLE Followers (
 
 CREATE TABLE Postrating (
         id MEDIUMINT NOT NULL,
-        rating MEDIUMINT NOT NULL DEFAULT 0,
+        likes MEDIUMINT NOT NULL DEFAULT 0,
+        dislikes MEDIUMINT NOT NULL DEFAULT 0,
+        points MEDIUMINT NOT NULL DEFAULT 0,
         FOREIGN KEY(id) REFERENCES Post(id)
 );
 
 CREATE TABLE Threadrating (
         id MEDIUMINT NOT NULL,
-        rating MEDIUMINT NOT NULL DEFAULT 0,
+        likes MEDIUMINT NOT NULL DEFAULT 0,
+        dislikes MEDIUMINT NOT NULL DEFAULT 0,
+        points MEDIUMINT NOT NULL DEFAULT 0,
         FOREIGN KEY(id) REFERENCES Thread(id)
 );
 
@@ -82,3 +87,4 @@ CREATE TABLE Subscribe (
         FOREIGN KEY(user_id) REFERENCES User(id),
         FOREIGN KEY(thread_id) REFERENCES Thread(id)
 );
+

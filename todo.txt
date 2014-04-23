@@ -1,11 +1,6 @@
-technopark-db-api
-=================
-
-#API Documentation
-
 ##Forum
-* [create](./doc/forum/create.md) +++++
-* [details](./doc/forum/details.md) +++++
+* [create](./doc/forum/create.md) !VERY GOOD!
+* [details](./doc/forum/details.md) !VERY GOOD!
 * [listPosts](./doc/forum/listPosts.md) !VERY GOOD!
 * [listThreads](./doc/forum/listThreads.md) !VERY GOOD!
 * [listUsers](./doc/forum/listUsers.md) !VERY GOOD!
@@ -14,33 +9,33 @@ technopark-db-api
 * [create](./doc/post/create.md) !VERY GOOD!
 * [details](./doc/post/details.md) !VERY GOOD!
 * [list](./doc/post/list.md) !VERY GOOD!
-* [remove](./doc/post/remove.md)
-* [restore](./doc/post/restore.md)
-* [update](./doc/post/update.md)
-* [vote](./doc/post/vote.md)
+* [remove](./doc/post/remove.md) !VERY GOOD!
+* [restore](./doc/post/restore.md) !VERY GOOD!
+* [update](./doc/post/update.md) !VERY GOOD!
+* [vote](./doc/post/vote.md) !VERY GOOD!
 
 ##User
-* [create](./doc/user/create.md) +++++
-* [details](./doc/user/details.md) +++++
-* [follow](./doc/user/follow.md)
-* [listFollowers](./doc/user/listFollowers.md)
-* [listFollowing](./doc/user/listFollowing.md)
-* [listPosts](./doc/user/listPosts.md)
-* [unfollow](./doc/user/unfollow.md)
-* [updateProfile](./doc/user/updateProfile.md)
+* [create](./doc/user/create.md) !VERY GOOD!
+* [details](./doc/user/details.md) !VERY GOOD!
+* [follow](./doc/user/follow.md) !VERY GOOD!
+* [listFollowers](./doc/user/listFollowers.md) !VERY GOOD!
+* [listFollowing](./doc/user/listFollowing.md) !VERY GOOD!
+* [listPosts](./doc/user/listPosts.md) !VERY GOOD!
+* [unfollow](./doc/user/unfollow.md) !VERY GOOD!
+* [updateProfile](./doc/user/updateProfile.md) !VERY GOOD!
 
 ##Thread
-* [close](./doc/thread/close.md)
-* [create](./doc/thread/create.md) yes!!!
-* [details](./doc/thread/details.md)
-* [list](./doc/thread/list.md)
-* [listPosts](./doc/thread/listPosts.md)
-* [open](./doc/thread/open.md)
-* [remove](./doc/thread/remove.md)
-* [restore](./doc/thread/restore.md)
-* [subscribe](./doc/thread/subscribe.md)
-* [unsubscribe](./doc/thread/unsubscribe.md)
-* [update](./doc/thread/update.md)
-* [vote](./doc/thread/vote.md)
+* [close](./doc/thread/close.md) !VERY GOOD!
+* [create](./doc/thread/create.md) !VERY GOOD!
+* [details](./doc/thread/details.md) !VERY GOOD!
+* [list](./doc/thread/list.md) !VERY GOOD!
+* [listPosts](./doc/thread/listPosts.md) !VERY GOOD!
+* [open](./doc/thread/open.md) !VERY GOOD!
+* [remove](./doc/thread/remove.md) !VERY GOOD!
 
+* [restore](./doc/thread/restore.md) !GOOD!
+* [subscribe](./doc/thread/subscribe.md) !GOOD!
+* [unsubscribe](./doc/thread/unsubscribe.md) !GOOD!
+* [update](./doc/thread/update.md) !GOOD!
+* [vote](./doc/thread/vote.md) !GOOD!
 

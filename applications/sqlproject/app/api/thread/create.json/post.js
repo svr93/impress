@@ -1,21 +1,25 @@
-module.exports = function(client, callback) {
+//also available:
+//var connection = client.application.databases.my_project.connection;
 
+//console.dir - только главная информация
+//здесь select по MAX(id)
+//включена отправка информации об ошибках
+
+module.exports = function(client, callback) {
     var data = JSON.parse(client.data);
     if (!data.isDeleted) {
         data.isDeleted = false;
     }
+    var connection = impress.conn;
 
-    var connection = impress.conn;    
-    check();
-
-    function check() {
-        connection.queryRow('SELECT *, COUNT(*) FROM Thread\
-        WHERE forum=? AND slug=?', [data.forum, data.slug],
-        function(err, row) {
-            console.dir({queryRow:row});
+    checkExistence();  
+    
+    function checkExistence() {
+        connection.queryRow('SELECT * FROM Thread WHERE forum=? AND title=?',
+        [data.forum, data.title], function (err, row) {
             if (err) {
-                sendError;
-            } else if (row['COUNT(*)'] == 1) {
+                sendError(err);
+            } else if (row !== false) {
                 send(row);
             } else {
                 insert();
@@ -24,19 +28,21 @@ module.exports = function(client, callback) {
     }
 
     function insert() {
-        connection.insert('Thread', {
-	    forum: data.forum,
-            isClosed: data.isClosed,
-            isDeleted: data.isDeleted,
-            message: data.message,
-            slug: data.slug,
-            title: data.title,
-            user: data.user,
-            date: data.date,           
-        }, function(err, results) {
-            console.dir({insert:results});
+        connection.query('INSERT INTO Thread (forum, title, \
+        isClosed, user, date, message, slug, isDeleted) \
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [
+            data.forum,
+            data.title,
+            data.isClosed,
+            data.user,
+            data.date,
+            data.message,
+            data.slug,
+            data.isDeleted
+        ],
+        function (err, results) {
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 selectMaxId();
             }
@@ -44,24 +50,33 @@ module.exports = function(client, callback) {
     }
 
     function selectMaxId() {
-        connection.queryRow('SELECT MAX(id) FROM Thread', [],
-        function(err, row) {
-            console.dir({queryRow:row});
+        connection.queryValue('SELECT MAX(id) FROM Thread', [],
+        function(err, value) {
             if (err) {
-                sendError();
+                sendError(err);
             } else {
-                selectThread(row);
+                startRating(value);
             }
         });
     }
 
-    function selectThread(row) {
+    function startRating(id) {
+        connection.query('INSERT INTO Threadrating (id) VALUES (?)', [id],
+        function (err, results) {
+            if (err) {
+                sendError(err);
+            } else {
+                selectThread(id);
+            }
+        });
+    }
+
+    function selectThread(id) {
         connection.queryRow('SELECT * FROM Thread WHERE id=?',
-        [row['MAX(id)']],
-        function(err, row) {
+        [id], function(err, row) {
             console.dir({queryRow:row});
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 send(row);
             }
@@ -71,26 +86,17 @@ module.exports = function(client, callback) {
     function send(row) {
         var response = {
             code: 0,
-            response: {
-                date: row['date'],
-                forum: row['forum'],
-                id: row['id'],
-                isClosed: row['isClosed'],
-                isDeleted: row['isDeleted'],
-                message: row['message'],
-                slug: row['slug'],
-                title: row['title'],
-                user: row['user']
-            }
+            response: row
         }
         client.context.data = JSON.stringify(response);
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
+            message: 'Error!',
+            info: err
         } 
         client.context.data = JSON.stringify(response);
         callback();

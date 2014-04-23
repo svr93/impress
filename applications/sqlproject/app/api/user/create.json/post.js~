@@ -1,56 +1,85 @@
 module.exports = function(client, callback) {
+
     var data = JSON.parse(client.data);
-    var code = 0;
-    var connection = impress.conn;
-    if (!client.query['isAnonymous']) {
-        client.query['isAnonymous'] = false;
+    if (!data.isAnonymous) {
+        data.isAnonymous = false;
+    }
+    
+    var connection = impress.conn;    
+    check();
+
+    function check() {
+        connection.queryRow('SELECT * FROM User WHERE email=?',
+        [data.email], function(err, row) {
+            console.dir({queryRow:row});
+            if (err) {
+                sendError();
+            } else if (row === false) {
+                insert();             
+            } else {
+                send(row);
+            }
+        });
     }
 
-    connection.insert('User', {
-            username: data.username,
-            about: data.about,
-            name: data.name,
-            email: data.email,
-            isAnonymous: data.isAnonymous,
-        }, function(err, results) {
-            console.dir({insert:results, err:err});
-            if (err !== null) code = 1;
-            select();
-    });
+    function insert() {
+        connection.query('INSERT INTO User (isAnonymous, username, about, \
+        name, email) \
+        VALUES (?, ?, ?, ?, ?)', [
+            data.isAnonymous,
+            data.username,
+            data.about,
+            data.name,
+            data.email
+        ],
+        function (err, results) {
+            console.dir({insert:results});
+            if (err) {
+                sendError();
+            } else {
+                selectMaxId();
+            }
+        });
+    }
 
-    function select() {
-        connection.queryRow('SELECT MAX(id) FROM User', [], function(err, row) {
+    function selectMaxId() {
+        connection.queryRow('SELECT * FROM User', [],
+        function(err, row) {
             console.dir({queryRow:row});
-            if (err !== null) code = 1;
-            connection.queryRow('SELECT * FROM User where id=?', [row['MAX(id)']], 
-            function(err, row) {
-                console.dir({queryRow:row});
-                if (err !== null) code = 1;
+            if (err) {
+                sendError();
+            } else {
+                startRating(row['MAX(id)']);
+            }
+        });
+    }
+
+    function selectPost(id) {
+        connection.queryRow('SELECT * FROM Post WHERE id=?',
+        [id], function(err, row) {
+            console.dir({queryRow:row});
+            if (err) {
+                sendError();
+            } else {
                 send(row);
-            });
+            }
         });
     }
 
     function send(row) {
-        var response;
-        if (code == 0) {
-            response = {
-                code: code,
-                response: {
-                    about: row['about'],
-                    email: row['email'],
-                    id: row['id'],
-                    isAnonymous: row['isAnonymous'],
-                    name: row['name'],
-                    username: row['username']                             
-                }
-            }
-        } else {
-            response = {
-                code: code,
-                message: 'Error!'
-            }
+        var response = {
+            code: 0,
+            response: row
         }
+        client.context.data = JSON.stringify(response);
+        callback();
+    }
+
+    function sendError() {
+        var response = {
+            code: 1,
+            message: 'Error!'
+        } 
         client.context.data = JSON.stringify(response);
         callback();
     }

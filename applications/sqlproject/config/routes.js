@@ -4,13 +4,17 @@
 module.exports = [
         //post requests
         {
-                url:      "/db/api/([a-zA-z0-9._]+)/(forum|post|thread|user)/(\\w+)/()",
-                rewrite:  "/api/[2]/[3].json"
+                url:      "/db/api/(forum|post|thread|user)/(\\w+)/()",
+                rewrite:  "/api/[1]/[2].json"
         },
         //get requests
         {
-                url:      "/db/api/([a-zA-z0-9._]+)/(forum|post|thread|user)/(\\w+)/(.*)",
-                rewrite:  "/api/[2]/[3].json[4]"
+                url:      "/db/api/(forum|post|thread|user)/(\\w+)/(.*)",
+                rewrite:  "/api/[1]/[2].json[3]"
+        },
+        {
+                url:      "/db/api/clear(.*)",
+                rewrite:  "/api/clear.json"
         }
 ]
 

@@ -2,5 +2,5 @@
 // Wildcard "*" is allowed for masking random or empty substring
 
 module.exports = [
-	"some.host.ru"
+	"localhost"
 ]

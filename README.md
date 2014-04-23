@@ -33,3 +33,7 @@ https://github.com/tshemsedinov - создатель сервера
                 impress.conn.slowTime = 100; // ms
 
                 //svr93// end
+4) использование затем подключения (2 варианта):
+
+                var connection = impress.conn; //использование костыля
+                var connection = client.application.databases.<connection_name_in_databases.js>.connection;

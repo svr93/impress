@@ -1,0 +1,64 @@
+////also available:
+//var connection = client.application.databases.my_project.connection;
+
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
+module.exports = function(client, callback) {
+    var data = JSON.parse(client.data);
+    var truncateTableArr = ['User', 'Forum', 'Thread', 'Post', 'Followers', 'Postrating', 'Threadrating', 'Subscribe'];
+    var connection = impress.conn;
+
+    clear();
+    
+    function truncateTable(table) {
+        if (table !== undefined) {
+            var query = 'TRUNCATE TABLE ' + table;
+            connection.query(query, [], function(err, results) {
+                if (err) {
+                    sendError();
+                } else {
+                    truncateTable(truncTableArr.pop());
+                }
+            });
+        } else {
+            setForeignKeyChecks(1);
+        }
+    }
+
+    function setForeignKeyChecks(value) {
+        connection.query('SET FOREIGN_KEY_CHECKS = ?', [value], function(err, results) {
+            if (err) {
+                sendError(err);
+            } else if (value === 1) {
+                send();
+            } else {
+                truncateTable(truncTableArr.pop());
+            }
+        });
+    }
+    
+    function clear() {
+        setForeignKeyChecks(0);
+    }
+
+    function send() {
+        var response = {
+            code: 0,
+            response: 'OK'
+        }
+        client.context.data = JSON.stringify(response);
+        callback();
+    }
+
+    function sendError(err) {
+        var response = {
+            code: 1,
+            message: 'Error!',
+            info: err
+        } 
+        client.context.data = JSON.stringify(response);
+        callback();
+    }
+}
+

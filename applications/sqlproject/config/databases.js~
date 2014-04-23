@@ -1,5 +1,4 @@
 //  /home/vladimir/impress_server/applications/sqlproject/config/databases.js
-//Официально поддерживаются MySQL и MongoDB
 
 module.exports = {
 
@@ -15,7 +14,9 @@ module.exports = {
 	},
 
 	my_project: {
-	 	url: "mysql://svr93:passwd@localhost:3306/forums",
+	 	url: "mysql://svr93:passwd@localhost:3306/forums?s=sock",
+socketath:  '/var/run/mysqld/mysqld.sock',
+                    
 	 	slowTime: "1s",
 	 	tables: [],                                     
                 // to be implemented (to be removed and use introspection)

@@ -1,49 +1,71 @@
+////also available:
+//var connection = client.application.databases.my_project.connection;
+
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
 module.exports = function(client, callback) {
     var data = JSON.parse(client.data);
-    var code = 0;
     var connection = impress.conn;
 
-    connection.insert('Forum', {
-            name: data.name,
-            short_name: data.short_name,
-            user: data.user,
-        }, function(err, results) {
-            console.dir({insert:results, err:err});
-            if (err !== null) code = 1;
-            select();
-    });
-
-    function select() {
-        connection.queryRow('SELECT MAX(id) FROM Forum', [], function(err, row) {
-            console.dir({queryRow:row});
-            if (err !== null) code = 1;
-            connection.queryRow('SELECT * FROM Forum where id=?', [row['MAX(id)']], 
-            function(err, row) {
-                console.dir({queryRow:row});
-                if (err !== null) code = 1;
+    checkExistence();  
+    
+    function checkExistence() {
+        connection.queryRow('SELECT * FROM Forum WHERE name=?',
+        [data.name], function (err, row) {
+            if (err) {
+                sendError(err);
+            } else if (row !== false) {
                 send(row);
-            });
+            } else {
+                insert();
+            }
+        });
+    }
+
+    function insert() {
+        connection.query('INSERT INTO Forum (name, short_name, user) \
+        VALUES (?, ?, ?)', [
+            data.name,
+            data.short_name,
+            data.user
+        ],
+        function (err, results) {
+            if (err) {
+                sendError(err);
+            } else {
+                selectForum();
+            }
+        });
+    }
+
+    function selectForum() {
+        connection.queryRow('SELECT * FROM Forum WHERE name=?',
+        [data.name], function(err, row) {
+            console.dir({queryRow:row});
+            if (err) {
+                sendError(err);
+            } else {
+                send(row);
+            }
         });
     }
 
     function send(row) {
-        var response;
-        if (code == 0) {
-            response = {
-                code: code,
-                response: {
-                    id: row['id'],
-                    name: row['name'],
-                    short_name: row['short_name'],
-                    user: row['user'],                            
-                }
-            }
-        } else {
-            response = {
-                code: code,
-                message: 'Error!'
-            }
+        var response = {
+            code: 0,
+            response: row
         }
+        client.context.data = JSON.stringify(response);
+        callback();
+    }
+
+    function sendError(err) {
+        var response = {
+            code: 1,
+            message: 'Error!',
+            info: err
+        } 
         client.context.data = JSON.stringify(response);
         callback();
     }

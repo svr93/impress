@@ -1,6 +1,6 @@
-////also available:
+//////also available:
 //var connection = client.application.databases.my_project.connection;
-
+//insertId используется
 //console.dir - только главная информация
 //включена отправка информации об ошибках
 
@@ -34,14 +34,14 @@ module.exports = function(client, callback) {
             if (err) {
                 sendError(err);
             } else {
-                selectForum();
+                selectForum(results['insertId']);
             }
         });
     }
 
-    function selectForum() {
-        connection.queryRow('SELECT * FROM Forum WHERE name=?',
-        [data.name], function(err, row) {
+    function selectForum(id) {
+        connection.queryRow('SELECT * FROM Forum WHERE id=?',
+        [id], function(err, row) {
             console.dir({queryRow:row});
             if (err) {
                 sendError(err);

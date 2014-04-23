@@ -1,6 +1,6 @@
 ////also available:
 //var connection = client.application.databases.my_project.connection;
-
+//insertid используется
 //console.dir - только главная информация
 //включена отправка информации об ошибках
 
@@ -11,19 +11,19 @@ module.exports = function(client, callback) {
     checkExistence();  
     
     function checkExistence() {
-        connection.queryRow('SELECT * FROM Forum WHERE name=?,
+        connection.queryRow('SELECT * FROM Forum WHERE name=?',
         [data.name], function (err, row) {
             if (err) {
                 sendError(err);
             } else if (row !== false) {
                 send(row);
             } else {
-                //insert();
+                insert();
             }
         });
     }
 
-    /*function insert() {
+    function insert() {
         connection.query('INSERT INTO Forum (name, short_name, user) \
         VALUES (?, ?, ?)', [
             data.name,
@@ -34,14 +34,14 @@ module.exports = function(client, callback) {
             if (err) {
                 sendError(err);
             } else {
-                selectForum();
+                selectForum(results['insertId']);
             }
         });
     }
 
-    function selectForum() {
-        connection.queryRow('SELECT * FROM Forum WHERE name=?',
-        [data.name], function(err, row) {
+    function selectForum(id) {
+        connection.queryRow('SELECT * FROM Forum WHERE id=?',
+        [id], function(err, row) {
             console.dir({queryRow:row});
             if (err) {
                 sendError(err);
@@ -49,7 +49,7 @@ module.exports = function(client, callback) {
                 send(row);
             }
         });
-    }*/
+    }
 
     function send(row) {
         var response = {

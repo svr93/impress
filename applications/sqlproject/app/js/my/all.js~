@@ -4,8 +4,8 @@
 //1) create - post
 function forumCreate() {
     var data = {
-        'name': 'Forum1', 
-        'short_name': 'forum1', 
+        'name': 'Forum6', 
+        'short_name': 'forum6', 
         'user': 'svr93@i.ua'
     }
     sendPost ("db/api/forum/create/", data);
@@ -294,13 +294,10 @@ function threadVote() {
     }
     sendPost ("db/api/thread/vote/", data);
 }
-//
 //clear
-//
 function clearDatabase() {
-    var data = {
-    }
-    sendPost ("db/api/clear", data);
+    var data = {}
+    sendPost ("db/api/clear/", data);
 }
 
 function sendGet (url, data) {

@@ -4,8 +4,8 @@
 //1) create - post
 function forumCreate() {
     var data = {
-        'name': 'Forum1', 
-        'short_name': 'forum1', 
+        'name': 'Forum7', 
+        'short_name': 'forum7', 
         'user': 'svr93@i.ua'
     }
     sendPost ("db/api/forum/create/", data);

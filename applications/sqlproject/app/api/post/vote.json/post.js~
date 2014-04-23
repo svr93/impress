@@ -11,13 +11,12 @@ module.exports = function(client, callback) {
         if (data.vote == 1) {
             userQuery = 'UPDATE Postrating \
             SET likes=likes+1, points=points+1 WHERE id=' + data.post;
-        }
-
-   
+        } else {
+            userQuery = 'UPDATE Postrating \
+            SET dislikes=dislikes+1, points=points-1 WHERE id=' + data.post;
+        }   
         
-        connection.query('UPDATE Postrating \
-        SET likes=?, dislikes=?, points=? WHERE id=?',
-        [data.message, data.post], function (err, results) {
+        connection.query(userQuery, [], function (err, results) {
             console.dir({query:results});
             if (err) {
                 sendError();

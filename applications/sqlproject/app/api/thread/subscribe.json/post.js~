@@ -8,7 +8,7 @@ module.exports = function(client, callback) {
     var data = JSON.parse(client.data);
     var connection = impress.conn;
 
-    check();
+    selectUserId();
 
     function selectUserId() {
         connection.queryValue('SELECT id FROM User WHERE email=?',

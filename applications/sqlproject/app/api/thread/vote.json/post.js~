@@ -24,7 +24,7 @@ module.exports = function(client, callback) {
                 connection.queryRow('SELECT * FROM Thread \
                 LEFT OUTER JOIN Threadrating \
                 ON Thread.id=Threadrating.id WHERE Thread.id=?',
-                [data.post], function (err, row) {
+                [data.thread], function (err, row) {
                     console.dir({queryRow:row});
                     if (err) {
                         sendError();

@@ -31,9 +31,7 @@ module.exports = function(client, callback) {
     function send(row) {
         var response = {
             code: 0,
-            response: {
-                'post': row
-            }
+            response: row
         }
         client.context.data = JSON.stringify(response);
         callback();

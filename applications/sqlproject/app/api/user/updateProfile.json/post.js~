@@ -73,7 +73,7 @@ module.exports = function(client, callback) {
                 var extraUserInfoArr = 
                 ['followers', 'following', 'subscriptions'];
 
-                getMoreUserInfo(user, extraUserInfoArr,
+                getMoreUserInfo(row, extraUserInfoArr,
                 extraUserInfoArr.pop());
             }
         });

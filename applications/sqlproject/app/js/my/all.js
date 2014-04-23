@@ -4,8 +4,8 @@
 //1) create - post
 function forumCreate() {
     var data = {
-        'name': 'Forum7', 
-        'short_name': 'forum7', 
+        'name': 'Forum1', 
+        'short_name': 'forum1', 
         'user': 'svr93@i.ua'
     }
     sendPost ("db/api/forum/create/", data);
@@ -321,7 +321,7 @@ function sendGet (url, data) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
        if (xhr.readyState == 4 && xhr.status == 200) {
-           console.log(JSON.parse(this.response));
+           console.log(this.response);
        }
     }			
     xhr.open('GET', url + params, true);
@@ -334,7 +334,7 @@ function sendPost (url, data) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
        if (xhr.readyState == 4 && xhr.status == 200) {
-           console.log(JSON.parse(this.response));
+           console.log(this.response);
        }
     }			
     xhr.open('POST', url, true);

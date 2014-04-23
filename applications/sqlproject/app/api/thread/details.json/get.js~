@@ -56,7 +56,6 @@ module.exports = function(client, callback) {
     }
     
     function getRelated(results, entity) {
-console.log('!!!!!!!!!!!!!!!!!!'+entity);
         if (entity === undefined) {
             send(results);
         } else if ((client.query['related']).indexOf(entity) == -1) {
@@ -83,7 +82,9 @@ console.log('!!!!!!!!!!!!!!!!!!'+entity);
 
                             getMoreUserInfo(elem[entity], extraUserInfoArr,
                             extraUserInfoArr.pop(), clbk);
-                        } else clbk();
+                        } else {//if entity == 'forum'
+                            clbk();
+                        }
                     }
                 });
             }, function(err) {

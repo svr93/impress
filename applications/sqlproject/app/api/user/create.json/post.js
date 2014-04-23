@@ -71,7 +71,7 @@ module.exports = function(client, callback) {
             code: 0,
             response: row
         }
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 
@@ -80,7 +80,7 @@ module.exports = function(client, callback) {
             code: 1,
             message: 'Error!'
         } 
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 }

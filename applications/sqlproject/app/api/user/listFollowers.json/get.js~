@@ -1,6 +1,6 @@
-////var connection = client.application.databases.my_project.connection;
+//also available:
+//var connection = client.application.databases.my_project.connection;
 module.exports = function(client, callback) {
-//
     if (!client.query['order']) {
         client.query['order'] = 'desc';
     }

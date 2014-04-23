@@ -19,7 +19,7 @@ module.exports = function(client, callback) {
                 connection.queryValue('SELECT id FROM Thread WHERE id=?',
                 [data.thread], function (err, value) {
                     console.dir({queryValue:value});
-                    if (err || row === false) {
+                    if (err) {
                         sendError(err);
                     } else {
                         send(value);
@@ -36,7 +36,7 @@ module.exports = function(client, callback) {
                 'thread': value
             }
         }
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 

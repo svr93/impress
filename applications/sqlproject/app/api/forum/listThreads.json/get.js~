@@ -94,8 +94,22 @@ module.exports = function(client, callback) {
             if (err) {
                 sendError();
             } else {
-                var mainData = results;
-                //getRelated(results, entityArr.pop());
+                async.each(results, function(elem, clbk) {
+                    connection.queryRow('SELECT COUNT(*) FROM Post Where thread=?',
+                    [elem['id']], function(err, row) {
+                        if (err) {
+                            sendError();
+                        } else {
+                            elem['posts'] = row['COUNT(*)'];
+                            clbk();
+                        }
+                    });
+                }, function(e) {
+                    if (e) {
+                        sendError();
+                    }
+                    getRelated(results, entityArr.pop());
+                });
             }
         });
     }

@@ -1,6 +1,6 @@
-////also available:
+//////also available:
 //var connection = client.application.databases.my_project.connection;
-//insertid используется
+//insertId используется
 //console.dir - только главная информация
 //включена отправка информации об ошибках
 

@@ -34,7 +34,7 @@ module.exports = function(client, callback) {
     
     function selectUser() {
         connection.queryRow('SELECT * FROM User WHERE email=?',
-        [client.query['email']], function (err, row) {
+        [client.query['user']], function (err, row) {
             console.dir({queryRow:row});
             if (err) {
                 sendError();

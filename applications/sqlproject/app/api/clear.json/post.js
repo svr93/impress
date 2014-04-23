@@ -44,7 +44,7 @@ module.exports = function(client, callback) {
             code: 0,
             response: 'OK'
         }
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 
@@ -54,7 +54,7 @@ module.exports = function(client, callback) {
             message: 'Error!',
             info: err
         } 
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 }

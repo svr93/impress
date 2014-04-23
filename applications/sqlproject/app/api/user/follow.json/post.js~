@@ -9,12 +9,17 @@ module.exports = function(client, callback) {
         connection.query('SELECT id, email FROM User WHERE email \
         IN (?, ?)', [data.follower, data.followee],
         function (err, results) {
-            if (err || results.length != 2) {
+            if (err || results.length == 0) {
                 sendError();
             } else {
                 var follower_id = "";
                 var followee_id = "";
-                if ((results[0])['email'] == data.follower) {
+                if (data.follower == data.followee) {
+                    follower_id = (results[0])['id'];
+                    followee_id = (results[0])['id'];
+                } else if (results.length == 1) {
+                    sendError();
+                } else if ((results[0])['email'] == data.follower) {
                     follower_id = (results[0])['id'];
                     followee_id = (results[1])['id'];
                 } else {

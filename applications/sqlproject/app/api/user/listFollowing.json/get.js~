@@ -15,6 +15,10 @@ module.exports = function(client, callback) {
             var userQuery = "";
             
             if (key == 'followers') {
+                userQuery = "SELECT email FROM User INNER JOIN Followers ON \
+                User.id=Followers.follower_id WHERE target_id=" + user['id'];
+
+            } else if (key == 'following') {
                 var since = "";
                 if (client.query['since']) {
                     since = ' AND id >= ' + client.query['since'];
@@ -23,14 +27,10 @@ module.exports = function(client, callback) {
                 if (client.query['limit']) {
                     limit = ' LIMIT ' + client.query['limit'];
                 }
-
+                
                 userQuery = "SELECT email FROM User INNER JOIN Followers ON \
-                User.id=Followers.follower_id WHERE target_id=" + user['id']
+                User.id=Followers.target_id WHERE follower_id=" + user['id']
                 + since + ' ORDER BY name ' + client.query['order'] + limit;
-
-            } else if (key == 'following') {
-                userQuery = "SELECT email FROM User INNER JOIN Followers ON \
-                User.id=Followers.target_id WHERE follower_id=" + user['id'];
             } else if (key == 'subscriptions') {
                 userQuery = "SELECT thread_id FROM Subscribe \
                 WHERE user_id=" + user['id'];

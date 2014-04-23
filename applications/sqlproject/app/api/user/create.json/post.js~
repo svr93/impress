@@ -43,19 +43,19 @@ module.exports = function(client, callback) {
     }
 
     function selectMaxId() {
-        connection.queryRow('SELECT * FROM User', [],
-        function(err, row) {
-            console.dir({queryRow:row});
+        connection.queryValue('SELECT MAX(id) FROM User', [],
+        function(err, value) {
+            console.dir({queryValue:value});
             if (err) {
                 sendError();
             } else {
-                startRating(row['MAX(id)']);
+                selectUser(value);
             }
         });
     }
 
-    function selectPost(id) {
-        connection.queryRow('SELECT * FROM Post WHERE id=?',
+    function selectUser(id) {
+        connection.queryRow('SELECT * FROM User WHERE id=?',
         [id], function(err, row) {
             console.dir({queryRow:row});
             if (err) {
@@ -71,7 +71,7 @@ module.exports = function(client, callback) {
             code: 0,
             response: row
         }
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;//JSON.stringify(response);
         callback();
     }
 

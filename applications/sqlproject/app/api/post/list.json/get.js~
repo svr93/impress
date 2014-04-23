@@ -16,16 +16,26 @@ module.exports = function(client, callback) {
             limit = ' LIMIT ' + client.query['limit'];
         }
 
-        var userQuery = 'SELECT * FROM Post LEFT OUTER JOIN Postrating \
-        ON Post.id=Postrating.id WHERE forum=' + '"' 
-        + client.query['forum'] + '"' + since + ' ORDER BY date ' + client.query['order'] + limit;
+        var userQuery = "";
+
+        if(!client.query['thread']) {
+            userQuery = 'SELECT * FROM Post LEFT OUTER JOIN Postrating \
+            ON Post.id=Postrating.id WHERE forum=' + '"' 
+            + client.query['forum'] + '"' + since + ' ORDER BY date ' 
+            + client.query['order'] + limit;
+        } else {
+            userQuery = 'SELECT * FROM Post LEFT OUTER JOIN Postrating \
+            ON Post.id=Postrating.id WHERE thread=' + '"' 
+            + client.query['thread'] + '"' + since + ' ORDER BY date ' 
+            + client.query['order'] + limit;
+        }
 
         connection.query(userQuery, [], function (err, results) {
             console.dir({query:results});
             if (err) {
                 sendError();
             } else {
-                getRelated(results, entityArr.pop());
+                send(results);
             }
         });
     }

@@ -23,15 +23,16 @@ module.exports = function(client, callback) {
         }
 
         var userQuery = 'SELECT * FROM Post LEFT OUTER JOIN Postrating \
-        ON Post.id=Postrating.id WHERE forum=' + '"' 
-        + client.query['forum'] + '"' + since + ' ORDER BY date ' + client.query['order'] + limit;
+        ON Post.id=Postrating.id WHERE thread=' + '"' 
+        + client.query['thread'] + '"' + since + ' ORDER BY date '
+        + client.query['order'] + limit;
 
         connection.query(userQuery, [], function (err, results) {
             console.dir({query:results});
             if (err) {
-                sendError();
+                sendError(err);
             } else {
-                getRelated(results, entityArr.pop());
+                send(results);
             }
         });
     }
@@ -45,10 +46,11 @@ module.exports = function(client, callback) {
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
+            message: 'Error!',
+            info: err
         } 
         client.context.data = JSON.stringify(response);
         callback();

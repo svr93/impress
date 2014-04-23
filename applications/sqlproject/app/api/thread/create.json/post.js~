@@ -16,7 +16,7 @@ module.exports = function(client, callback) {
     
     function checkExistence() {
         connection.queryRow('SELECT * FROM Thread WHERE forum=? AND title=?',
-        [data.forum, data.slug], function (err, row) {
+        [data.forum, data.title], function (err, row) {
             if (err) {
                 sendError(err);
             } else if (row !== false) {

@@ -15,12 +15,12 @@ module.exports = function(client, callback) {
                 sendError();
             } else {
                 connection.queryRow('SELECT id FROM Thread WHERE id=?',
-                [data.thread], function (err, value) {
-                    console.dir({queryValue:value});
-                    if (err) {
+                [data.thread], function (err, row) {
+                    console.dir({queryRow:row});
+                    if (err || row === false) {
                         sendError();
                     } else {
-                        send(value);
+                        send(row['id']);
                     }
                 });
             }

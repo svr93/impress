@@ -4,8 +4,8 @@
 //1) create - post
 function forumCreate() {
     var data = {
-        'name': 'Forum6', 
-        'short_name': 'forum6', 
+        'name': 'Forum7', 
+        'short_name': 'forum7', 
         'user': 'svr93@i.ua'
     }
     sendPost ("db/api/forum/create/", data);
@@ -334,7 +334,8 @@ function sendPost (url, data) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
        if (xhr.readyState == 4 && xhr.status == 200) {
-           console.log(JSON.parse(this.response));
+           console.log(this.response);
+           //console.log(JSON.parse(this.response));
        }
     }			
     xhr.open('POST', url, true);

@@ -34,9 +34,8 @@ module.exports = function(client, callback) {
                     if (err) {
                         sendError();
                     } else if (row !== false) {
-//delete
-                        connection.query('INSERT INTO Followers \
-                        (follower_id, target_id) VALUES (?, ?)',
+                        connection.query('DELETE FROM Followers \
+                        WHERE follower_id=? AND target_id=?',
                         [follower_id, followee_id], 
                         function (err, results) {
                             if (err) {

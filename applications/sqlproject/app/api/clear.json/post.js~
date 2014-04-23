@@ -9,37 +9,34 @@ module.exports = function(client, callback) {
     var truncateTableArr = ['User', 'Forum', 'Thread', 'Post', 'Followers', 'Postrating', 'Threadrating', 'Subscribe'];
     var connection = impress.conn;
 
-    clear();
+    clear(0);
     
     function truncateTable(table) {
         if (table !== undefined) {
-            var query = 'TRUNCATE TABLE ' + table;
-            connection.query(query, [], function(err, results) {
+            var userQuery = 'TRUNCATE TABLE ' + table;
+            connection.query(userQuery, [], function(err, results) {
                 if (err) {
-                    sendError();
+                    sendError(err);
                 } else {
-                    truncateTable(truncTableArr.pop());
+                    console.dir({query:results});
+                    truncateTable(truncateTableArr.pop());
                 }
             });
         } else {
-            setForeignKeyChecks(1);
+            clear(1);
         }
     }
 
-    function setForeignKeyChecks(value) {
+    function clear(value) {
         connection.query('SET FOREIGN_KEY_CHECKS = ?', [value], function(err, results) {
             if (err) {
                 sendError(err);
             } else if (value === 1) {
                 send();
             } else {
-                truncateTable(truncTableArr.pop());
+                truncateTable(truncateTableArr.pop());
             }
         });
-    }
-    
-    function clear() {
-        setForeignKeyChecks(0);
     }
 
     function send() {

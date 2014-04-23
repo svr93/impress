@@ -65,7 +65,7 @@ module.exports = function(client, callback) {
                 'user': data.user
             }
         }
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 
@@ -75,7 +75,7 @@ module.exports = function(client, callback) {
             message: 'Error!',
             info: err
         } 
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 }

@@ -111,6 +111,7 @@ module.exports = function(client, callback) {
             code: 0,
             response: results[0]
         }
+console.dir(response);
         client.context.data = response;
         callback();
     }

@@ -14,9 +14,7 @@ module.exports = {
 	},
 
 	my_project: {
-	 	url: "mysql://svr93:passwd@localhost:3306/forums?s=sock",
-socketath:  '/var/run/mysqld/mysqld.sock',
-                    
+	 	url: "mysql://svr93:passwd@localhost:3306/forums",
 	 	slowTime: "1s",
 	 	tables: [],                                     
                 // to be implemented (to be removed and use introspection)

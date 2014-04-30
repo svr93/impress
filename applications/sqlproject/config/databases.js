@@ -14,7 +14,7 @@ module.exports = {
 	},
 
 	my_project: {
-	 	url: "mysql://svr93:passwd@localhost:3306/forums",
+	 	url: "mysql://svr93:passwd@localhost:3306/forums?timezone=+0000",
 	 	slowTime: "1s",
 	 	tables: [],                                     
                 // to be implemented (to be removed and use introspection)

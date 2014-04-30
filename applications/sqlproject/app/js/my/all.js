@@ -299,7 +299,7 @@ function clearDatabase() {
     var data = {}
     sendPost ("db/api/clear/", data);
 }
-
+//
 function sendGet (url, data) {
     params = "?";
     for (var key in data) {

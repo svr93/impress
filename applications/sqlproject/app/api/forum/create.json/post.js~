@@ -1,62 +1,50 @@
 //////also available:
 //var connection = client.application.databases.my_project.connection;
-//insertId используется
+
 //console.dir - только главная информация
 //включена отправка информации об ошибках
 
 module.exports = function(client, callback) {
     var data = JSON.parse(client.data);
+    var truncateTableArr = ['User', 'Forum', 'Thread', 'Post', 'Followers', 'Postrating', 'Threadrating', 'Subscribe'];
     var connection = impress.conn;
 
-    checkExistence();  
+    clear(0);
     
-    function checkExistence() {
-        connection.queryRow('SELECT * FROM Forum WHERE name=?',
-        [data.name], function (err, row) {
+    function truncateTable(table) {
+        if (table !== undefined) {
+            var userQuery = 'TRUNCATE TABLE ' + table;
+            connection.query(userQuery, [], function(err, results) {
+                if (err) {
+                    sendError(err);
+                } else {
+                    console.dir({query:results});
+                    truncateTable(truncateTableArr.pop());
+                }
+            });
+        } else {
+            clear(1);
+        }
+    }
+
+    function clear(value) {
+        connection.query('SET FOREIGN_KEY_CHECKS = ?', [value], function(err, results) {
             if (err) {
                 sendError(err);
-            } else if (row !== false) {
-                send(row);
+            } else if (value === 1) {
+                send();
             } else {
-                insert();
+                truncateTable(truncateTableArr.pop());
             }
         });
     }
 
-    function insert() {
-        connection.query('INSERT INTO Forum (name, short_name, user) \
-        VALUES (?, ?, ?)', [
-            data.name,
-            data.short_name,
-            data.user
-        ],
-        function (err, results) {
-            if (err) {
-                sendError(err);
-            } else {
-                selectForum(results['insertId']);
-            }
-        });
-    }
-
-    function selectForum(id) {
-        connection.queryRow('SELECT * FROM Forum WHERE id=?',
-        [id], function(err, row) {
-            console.dir({queryRow:row});
-            if (err) {
-                sendError(err);
-            } else {
-                send(row);
-            }
-        });
-    }
-
-    function send(row) {
+    function send() {
         var response = {
             code: 0,
-            response: row
+            response: 'OK'
         }
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 
@@ -66,7 +54,7 @@ module.exports = function(client, callback) {
             message: 'Error!',
             info: err
         } 
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 }

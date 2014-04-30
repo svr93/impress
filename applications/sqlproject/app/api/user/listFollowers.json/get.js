@@ -25,15 +25,15 @@ module.exports = function(client, callback) {
                 }
 
                 userQuery = "SELECT email FROM User INNER JOIN Followers ON \
-                User.id=Followers.follower_id WHERE target_id=" + user['id']
+User.id=Followers.follower_id WHERE target_id=" + user['id']
                 + since + ' ORDER BY name ' + client.query['order'] + limit;
 
             } else if (key == 'following') {
                 userQuery = "SELECT email FROM User INNER JOIN Followers ON \
-                User.id=Followers.target_id WHERE follower_id=" + user['id'];
+User.id=Followers.target_id WHERE follower_id=" + user['id'];
             } else if (key == 'subscriptions') {
                 userQuery = "SELECT thread_id FROM Subscribe \
-                WHERE user_id=" + user['id'];
+WHERE user_id=" + user['id'];
             }
             connection.queryCol(userQuery, [], function(err, arr) {
                 if (err) {
@@ -45,7 +45,7 @@ module.exports = function(client, callback) {
                 }
             });
         }
-    }                
+    }
     
     function selectUser() {
         connection.queryRow('SELECT * FROM User WHERE email=?',
@@ -54,10 +54,10 @@ module.exports = function(client, callback) {
             if (err) {
                 sendError();
             } else {
-                var extraUserInfoArr = 
+                var extraUserInfoArr =
                 ['followers', 'following', 'subscriptions'];
 
-                getMoreUserInfo(row, extraUserInfoArr, 
+                getMoreUserInfo(row, extraUserInfoArr,
                 extraUserInfoArr.pop());
             }
         });
@@ -76,9 +76,8 @@ module.exports = function(client, callback) {
         var response = {
             code: 1,
             message: 'Error!'
-        } 
+        }
         client.context.data = response;
         callback();
     }
 }
-

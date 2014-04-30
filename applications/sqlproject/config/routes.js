@@ -12,6 +12,7 @@ module.exports = [
                 url:      "/db/api/(forum|post|thread|user)/(\\w+)/(.*)",
                 rewrite:  "/api/[1]/[2].json[3]"
         },
+        //clear database
         {
                 url:      "/db/api/clear(.*)",
                 rewrite:  "/api/clear.json"

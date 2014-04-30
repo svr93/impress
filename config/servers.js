@@ -1,10 +1,12 @@
+// /home/vladimir/impress_server/config/servers.js
+
 // Server ports bind configuration
 // Each server is named server on specified address and port
 
 module.exports = {
 	www: {
 		protocol:      "http",
-		address:       "127.0.0.1",
+		address:       "0.0.0.0",
 		port:          80,
 		applications:  ["example", "sqlproject"], // virtual hosts for this server (see hosts definitions below)
 		nagle:         true,        // Nagle algorithm, default true, set to false for latency optimization
@@ -24,3 +26,4 @@ module.exports = {
 	//	slowTime:  1000
 	//}
 }
+

@@ -54,14 +54,14 @@ function forumListUsers() {
 //6) create - post
 function postCreate() {
     var data = {
-        'parent': 10, //optional
+        //'parent': 10, //optional
         'isApproved': true, //optional
         'user': 'svr93@i.ua',
         'date': '2000-01-01 00:00:00',
         'message': 'Message1',
         'isSpam': false, //optional
         'isHighlighted': true, //optional
-        'thread': 3,
+        'thread': 1,
         'forum': 'forum1',
         'isDeleted': false, //optional
         'isEdited': true //optional
@@ -194,7 +194,7 @@ function userUpdateProfile() {
 //21) close - post
 function threadClose() {
     var data = {
-        'thread': 3,
+        'thread': 1,
     }
     sendPost ("db/api/thread/close/", data);
 }

@@ -1,5 +1,10 @@
-module.exports = function(client, callback) {
+//////also available:
+//var connection = client.application.databases.my_project.connection;
 
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
+module.exports = function(client, callback) {
     var connection = impress.conn;
 
     selectUser();
@@ -22,7 +27,7 @@ module.exports = function(client, callback) {
             }
             connection.queryCol(userQuery, [], function(err, arr) {
                 if (err) {
-                    sendError();
+                    sendError(err);
                 } else {
                     user[key] = arr;
                     getMoreUserInfo(user, extraUserInfoArr,
@@ -37,7 +42,7 @@ module.exports = function(client, callback) {
         [client.query['user']], function (err, row) {
             console.dir({queryRow:row});
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 var extraUserInfoArr = 
                 ['followers', 'following', 'subscriptions'];
@@ -57,10 +62,11 @@ module.exports = function(client, callback) {
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
+            message: 'Error!',
+            info: err
         } 
         client.context.data = response;
         callback();

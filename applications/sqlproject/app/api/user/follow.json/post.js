@@ -1,24 +1,25 @@
-module.exports = function(client, callback) {
-    
+//*//*//also available:
+//var connection = client.application.databases.my_project.connection;
+
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
+module.exports = function(client, callback) {    
     var data = JSON.parse(client.data);
     var connection = impress.conn;
 
-    follow();
+    check();
 
-    function follow() {
-        connection.query('SELECT id, email FROM User WHERE email \
-        IN (?, ?)', [data.follower, data.followee],
-        function (err, results) {
-            if (err || results.length == 0) {
-                sendError();
-            } else {
-                var follower_id = "";
-                var followee_id = "";
-                if (data.follower == data.followee) {
-                    follower_id = (results[0])['id'];
-                    followee_id = (results[0])['id'];
-                } else if (results.length == 1) {
-                    sendError();
+    function check() {
+        var follower_id = "";
+        var followee_id = "";
+ 
+        if (data.follower != data.followee) {
+            connection.query('SELECT id, email FROM User WHERE email \
+            IN (?, ?)', [data.follower, data.followee],
+            function (err, results) {
+                if (err || results.length < 2) {
+                    sendError(err);
                 } else if ((results[0])['email'] == data.follower) {
                     follower_id = (results[0])['id'];
                     followee_id = (results[1])['id'];
@@ -26,26 +27,61 @@ module.exports = function(client, callback) {
                     follower_id = (results[1])['id'];
                     followee_id = (results[0])['id'];
                 }
-                connection.queryRow('SELECT * FROM Followers \
-                WHERE follower_id=? AND target_id=?',
-                [follower_id, followee_id], function(err, row) {
-                    if (err) {
-                        sendError();
-                    } else if (row === false) {
-                        connection.query('INSERT INTO Followers \
-                        (follower_id, target_id) VALUES (?, ?)',
-                        [follower_id, followee_id], 
-                        function (err, results) {
-                            if (err) {
-                                sendError();
-                            } else {
-                                selectUser();
-                            }
-                        });
-                    } else {
-                        selectUser();
-                    }
-                });
+                selectFollowing(follower_id, followee_id);
+            });
+        } else {
+            connection.queryRow('SELECT id FROM User WHERE email=?',
+            [data.follower],
+            function (err, row) {
+                if (err || row === false) {
+                    sendError(err);
+                } else {
+                    follower_id = row['id'];
+                    followee_id = row['id'];
+                }
+                selectFollowing(follower_id, followee_id);
+            });
+        }
+    }
+
+    function selectFollowing(follower_id, followee_id) {
+        connection.queryRow('SELECT * FROM Followers \
+        WHERE follower_id=? AND target_id=?',
+        [follower_id, followee_id], function(err, row) {
+            if (err) {
+                sendError(err);
+            } else if (row === false) {
+                insert(follower_id, followee_id);
+            } else {
+                selectUser(follower_id);
+            }
+        });
+    }
+    
+    function insert(follower_id, followee_id) {
+        connection.query('INSERT INTO Followers (follower_id, target_id) \
+        VALUES (?, ?)', [follower_id, followee_id], 
+        function (err, results) {
+            if (err) {
+                sendError(err);
+            } else {
+                selectUser(follower_id);
+            }
+        });
+    }
+
+    function selectUser(follower_id) {
+        connection.queryRow('SELECT * FROM User WHERE id=?',
+        [follower_id], function (err, row) {
+            console.dir({queryRow:row});
+            if (err) {
+                sendError(err);
+            } else {
+                var extraUserInfoArr = 
+                ['followers', 'following', 'subscriptions'];
+
+                getMoreUserInfo(row, extraUserInfoArr, 
+                extraUserInfoArr.pop());
             }
         });
     }
@@ -68,7 +104,7 @@ module.exports = function(client, callback) {
             }
             connection.queryCol(userQuery, [], function(err, arr) {
                 if (err) {
-                    sendError();
+                    sendError(err);
                 } else {
                     user[key] = arr;
                     getMoreUserInfo(user, extraUserInfoArr,
@@ -77,23 +113,7 @@ module.exports = function(client, callback) {
             });
         }
     }                
-    
-    function selectUser() {
-        connection.queryRow('SELECT * FROM User WHERE email=?',
-        [data.follower], function (err, row) {
-            console.dir({queryRow:row});
-            if (err) {
-                sendError();
-            } else {
-                var extraUserInfoArr = 
-                ['followers', 'following', 'subscriptions'];
-
-                getMoreUserInfo(row, extraUserInfoArr, 
-                extraUserInfoArr.pop());
-            }
-        });
-    }
-      
+          
     function send(results) {
         var response = {
             code: 0,
@@ -103,10 +123,11 @@ module.exports = function(client, callback) {
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
+            message: 'Error!',
+            info: err
         } 
         client.context.data = response;
         callback();

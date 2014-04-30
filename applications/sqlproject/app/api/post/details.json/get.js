@@ -1,3 +1,9 @@
+//////also available:
+//var connection = client.application.databases.my_project.connection;
+
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
 module.exports = function(client, callback) {
     if (!client.query['related']) {
         client.query['related'] = '[]';
@@ -25,7 +31,7 @@ module.exports = function(client, callback) {
             }
             connection.queryCol(userQuery, [], function(err, arr) {
                 if (err) {
-                    sendError();
+                    sendError(err);
                 } else {
                     user[key] = arr;
                     getMoreUserInfo(user, extraUserInfoArr, extraUserInfoArr.pop(), clbk);
@@ -39,7 +45,7 @@ module.exports = function(client, callback) {
         connection.queryRow('SELECT COUNT(*) FROM Post WHERE thread=?', 
         [param], function(err, row) {
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 thread['posts'] = row['COUNT(*)'];
                 clbk();
@@ -56,7 +62,7 @@ module.exports = function(client, callback) {
             var userQuery = "";
 
             if (entity == 'thread') {
-                userQuery = 'SELECT * FROM Thread LEFT OUTER JOIN Threadrating \
+                userQuery = 'SELECT * FROM Thread INNER JOIN Threadrating \
                 ON Thread.id=Threadrating.id WHERE Thread.id=?';
             } else if (entity == 'forum') {
                 userQuery = 'SELECT * FROM Forum WHERE short_name=?';
@@ -68,7 +74,7 @@ module.exports = function(client, callback) {
                 var param = elem[entity];
                 connection.queryRow(userQuery, [param], function(err, row) {
                     if (err) {
-                        sendError();
+                        sendError(err);
                     } else {
                         elem[entity] = row;
                         if (entity == 'thread') {
@@ -86,7 +92,7 @@ module.exports = function(client, callback) {
                 });
             }, function(err) {
                 if (err) {
-                    sendError();
+                    sendError(err);
                 }
                 getRelated(results, entityArr.pop());
             });
@@ -94,12 +100,12 @@ module.exports = function(client, callback) {
     }
 
     function selectPost() {
-        connection.query('SELECT * FROM Post LEFT OUTER JOIN Postrating \
+        connection.query('SELECT * FROM Post INNER JOIN Postrating \
         ON Post.id=Postrating.id WHERE Post.id=?',
         [client.query['post']], function (err, results) {
             console.dir({query:results});
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 getRelated(results, entityArr.pop());
             }
@@ -111,12 +117,11 @@ module.exports = function(client, callback) {
             code: 0,
             response: results[0]
         }
-console.dir(response);
         client.context.data = response;
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
             message: 'Error!'

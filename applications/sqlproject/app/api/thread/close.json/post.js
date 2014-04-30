@@ -1,5 +1,9 @@
-//also available:
+//////also available:
 //var connection = client.application.databases.my_project.connection;
+
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
 module.exports = function(client, callback) {
     var data = JSON.parse(client.data);
     var connection = impress.conn;
@@ -10,15 +14,14 @@ module.exports = function(client, callback) {
         
         connection.query('UPDATE Thread SET isClosed=true WHERE id=?',
         [data.thread], function (err, results) {
-            console.dir({query:results});
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 connection.queryRow('SELECT id FROM Thread WHERE id=?',
                 [data.thread], function (err, row) {
                     console.dir({queryRow:row});
                     if (err || row === false) {
-                        sendError();
+                        sendError(err);
                     } else {
                         send(row['id']);
                     }
@@ -38,10 +41,11 @@ module.exports = function(client, callback) {
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
+            message: 'Error!',
+            info: err
         } 
         client.context.data = response;
         callback();

@@ -1,5 +1,9 @@
-//also available:
+//*//*//also available:
 //var connection = client.application.databases.my_project.connection;
+
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
 module.exports = function(client, callback) {
     if (!client.query['order']) {
         client.query['order'] = 'desc';
@@ -7,6 +11,22 @@ module.exports = function(client, callback) {
     var connection = impress.conn;
 
     selectUser();
+
+    function selectUser() {
+        connection.queryRow('SELECT * FROM User WHERE email=?',
+        [client.query['user']], function (err, row) {
+            console.dir({queryRow:row});
+            if (err) {
+                sendError(err);
+            } else {
+                var extraUserInfoArr = 
+                ['followers', 'following', 'subscriptions'];
+
+                getMoreUserInfo(row, extraUserInfoArr, 
+                extraUserInfoArr.pop());
+            }
+        });
+    }
 
     function getMoreUserInfo(user, extraUserInfoArr, key) {
         if (key === undefined) {
@@ -16,28 +36,29 @@ module.exports = function(client, callback) {
             
             if (key == 'followers') {
                 var since = "";
-                if (client.query['since']) {
-                    since = ' AND id >= ' + client.query['since'];
+                if (client.query['since_id']) {
+                    since = ' AND id >= ' + client.query['since_id'];
                 }
+
                 var limit = "";
                 if (client.query['limit']) {
                     limit = ' LIMIT ' + client.query['limit'];
                 }
 
                 userQuery = "SELECT email FROM User INNER JOIN Followers ON \
-User.id=Followers.follower_id WHERE target_id=" + user['id']
+                User.id=Followers.follower_id WHERE target_id=" + user['id']
                 + since + ' ORDER BY name ' + client.query['order'] + limit;
 
             } else if (key == 'following') {
                 userQuery = "SELECT email FROM User INNER JOIN Followers ON \
-User.id=Followers.target_id WHERE follower_id=" + user['id'];
+                User.id=Followers.target_id WHERE follower_id=" + user['id'];
             } else if (key == 'subscriptions') {
                 userQuery = "SELECT thread_id FROM Subscribe \
-WHERE user_id=" + user['id'];
+                WHERE user_id=" + user['id'];
             }
             connection.queryCol(userQuery, [], function(err, arr) {
                 if (err) {
-                    sendError();
+                    sendError(err);
                 } else {
                     user[key] = arr;
                     getMoreUserInfo(user, extraUserInfoArr,
@@ -45,23 +66,7 @@ WHERE user_id=" + user['id'];
                 }
             });
         }
-    }
-    
-    function selectUser() {
-        connection.queryRow('SELECT * FROM User WHERE email=?',
-        [client.query['user']], function (err, row) {
-            console.dir({queryRow:row});
-            if (err) {
-                sendError();
-            } else {
-                var extraUserInfoArr =
-                ['followers', 'following', 'subscriptions'];
-
-                getMoreUserInfo(row, extraUserInfoArr,
-                extraUserInfoArr.pop());
-            }
-        });
-    }
+    }                   
       
     function send(results) {
         var response = {
@@ -72,12 +77,14 @@ WHERE user_id=" + user['id'];
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
-        }
+            message: 'Error!',
+            info: err
+        } 
         client.context.data = response;
         callback();
     }
 }
+

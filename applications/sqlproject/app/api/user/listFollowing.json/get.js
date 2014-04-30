@@ -1,5 +1,9 @@
-//also available:
+//*//*//also available:
 //var connection = client.application.databases.my_project.connection;
+
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
 module.exports = function(client, callback) {
     if (!client.query['order']) {
         client.query['order'] = 'desc';
@@ -7,6 +11,22 @@ module.exports = function(client, callback) {
     var connection = impress.conn;
 
     selectUser();
+
+    function selectUser() {
+        connection.queryRow('SELECT * FROM User WHERE email=?',
+        [client.query['user']], function (err, row) {
+            console.dir({queryRow:row});
+            if (err) {
+                sendError(err);
+            } else {
+                var extraUserInfoArr = 
+                ['followers', 'following', 'subscriptions'];
+
+                getMoreUserInfo(row, extraUserInfoArr, 
+                extraUserInfoArr.pop());
+            }
+        });
+    }
 
     function getMoreUserInfo(user, extraUserInfoArr, key) {
         if (key === undefined) {
@@ -20,9 +40,10 @@ module.exports = function(client, callback) {
 
             } else if (key == 'following') {
                 var since = "";
-                if (client.query['since']) {
-                    since = ' AND id >= ' + client.query['since'];
+                if (client.query['since_id']) {
+                    since = ' AND id >= ' + client.query['since_id'];
                 }
+
                 var limit = "";
                 if (client.query['limit']) {
                     limit = ' LIMIT ' + client.query['limit'];
@@ -37,7 +58,7 @@ module.exports = function(client, callback) {
             }
             connection.queryCol(userQuery, [], function(err, arr) {
                 if (err) {
-                    sendError();
+                    sendError(err);
                 } else {
                     user[key] = arr;
                     getMoreUserInfo(user, extraUserInfoArr,
@@ -46,23 +67,7 @@ module.exports = function(client, callback) {
             });
         }
     }                
-    
-    function selectUser() {
-        connection.queryRow('SELECT * FROM User WHERE email=?',
-        [client.query['user']], function (err, row) {
-            console.dir({queryRow:row});
-            if (err) {
-                sendError();
-            } else {
-                var extraUserInfoArr = 
-                ['followers', 'following', 'subscriptions'];
-
-                getMoreUserInfo(row, extraUserInfoArr, 
-                extraUserInfoArr.pop());
-            }
-        });
-    }
-      
+          
     function send(results) {
         var response = {
             code: 0,
@@ -72,10 +77,11 @@ module.exports = function(client, callback) {
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
+            message: 'Error!',
+            info: err
         } 
         client.context.data = response;
         callback();

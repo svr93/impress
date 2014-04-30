@@ -1,4 +1,4 @@
-////also available:
+//////also available:
 //var connection = client.application.databases.my_project.connection;
 
 //console.dir - только главная информация
@@ -48,8 +48,7 @@ module.exports = function(client, callback) {
         } else if ((client.query['related']).indexOf(entity) == -1) {
             getRelated(results, entityArr.pop());
         } else {
-            var userQuery = 'SELECT email, id, isAnonymous, name \
-            FROM User WHERE email=?';
+            var userQuery = 'SELECT * FROM User WHERE email=?';
             
             async.each(results, function(elem, clbk) {
                 var param = elem[entity];

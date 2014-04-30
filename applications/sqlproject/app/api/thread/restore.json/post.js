@@ -1,4 +1,4 @@
-//also available:
+//////also available:
 //var connection = client.application.databases.my_project.connection;
 
 //console.dir - только главная информация
@@ -16,13 +16,13 @@ module.exports = function(client, callback) {
             if (err) {
                 sendError(err);
             } else {
-                connection.queryValue('SELECT id FROM Thread WHERE id=?',
-                [data.thread], function (err, value) {
-                    console.dir({queryValue:value});
-                    if (err) {
+                connection.queryRow('SELECT * FROM Thread WHERE id=?',
+                [data.thread], function (err, row) {
+                    console.dir({queryRow:row});
+                    if (err || row === false) {
                         sendError(err);
                     } else {
-                        send(value);
+                        send(row['id']);
                     }
                 });
             }

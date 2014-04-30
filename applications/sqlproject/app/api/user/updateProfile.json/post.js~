@@ -1,5 +1,7 @@
 //also available:
 //var connection = client.application.databases.my_project.connection;
+
+
 module.exports = function(client, callback) {
     var data = JSON.parse(client.data);
     var connection = impress.conn;

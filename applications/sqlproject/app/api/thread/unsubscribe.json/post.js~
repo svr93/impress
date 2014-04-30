@@ -1,4 +1,4 @@
-//also available:
+//*//*//also available:
 //var connection = client.application.databases.my_project.connection;
 
 //console.dir - только главная информация
@@ -54,7 +54,7 @@ module.exports = function(client, callback) {
                 'user': data.user
             }
         }
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 
@@ -64,7 +64,7 @@ module.exports = function(client, callback) {
             message: 'Error!',
             info: err
         } 
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 }

@@ -1,3 +1,9 @@
+//////also available:
+//var connection = client.application.databases.my_project.connection;
+
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
 module.exports = function(client, callback) {
     if (!client.query['order']) {
         client.query['order'] = 'desc';
@@ -24,7 +30,7 @@ module.exports = function(client, callback) {
             }
             connection.queryCol(userQuery, [], function(err, arr) {
                 if (err) {
-                    sendError();
+                    sendError(err);
                 } else {
                     user[key] = arr;
                     getMoreUserInfo(user, extraUserInfoArr, extraUserInfoArr.pop(), clbk);
@@ -51,7 +57,7 @@ module.exports = function(client, callback) {
         connection.query(userQuery, [], function (err, results) {
             console.dir({query:results});
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 var extraUserInfoArr = ['followers', 'following', 'subscriptions'];
 
@@ -60,7 +66,7 @@ module.exports = function(client, callback) {
                     extraUserInfoArr.pop(), clbk);
                 }, function(e) {
                     if (e) {
-                        sendError();
+                        sendError(err);
                     }
                     send(results);
                 });
@@ -77,10 +83,11 @@ module.exports = function(client, callback) {
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
+            message: 'Error!',
+            info: err
         } 
         client.context.data = response;
         callback();

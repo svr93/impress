@@ -1,3 +1,9 @@
+//////also available:
+//var connection = client.application.databases.my_project.connection;
+
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
 module.exports = function(client, callback) {
     if (!client.query['order']) {
         client.query['order'] = 'desc';
@@ -28,7 +34,7 @@ module.exports = function(client, callback) {
             }
             connection.queryCol(userQuery, [], function(err, arr) {
                 if (err) {
-                    sendError();
+                    sendError(err);
                 } else {
                     user[key] = arr;
                     getMoreUserInfo(user, extraUserInfoArr, extraUserInfoArr.pop(), clbk);
@@ -41,7 +47,7 @@ module.exports = function(client, callback) {
         var param = thread['id'];
         connection.queryRow('SELECT COUNT(*) FROM Post WHERE thread=?', [param], function(err, row) {
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 thread['posts'] = row['COUNT(*)'];
                 clbk();
@@ -58,7 +64,7 @@ module.exports = function(client, callback) {
             var userQuery = "";
 
             if (entity == 'thread') {
-                userQuery = 'SELECT * FROM Thread LEFT OUTER JOIN Threadrating \
+                userQuery = 'SELECT * FROM Thread INNER JOIN Threadrating \
                 ON Thread.id=Threadrating.id WHERE Thread.id=?';
             } else if (entity == 'forum') {
                 userQuery = 'SELECT * FROM Forum WHERE short_name=?';
@@ -70,7 +76,7 @@ module.exports = function(client, callback) {
                 var param = elem[entity];
                 connection.queryRow(userQuery, [param], function(err, row) {
                     if (err) {
-                        sendError();
+                        sendError(err);
                     } else {
                         elem[entity] = row;
                         if (entity == 'thread') {
@@ -85,7 +91,7 @@ module.exports = function(client, callback) {
                 });
             }, function(err) {
                 if (err) {
-                    sendError();
+                    sendError(err);
                 }
                 getRelated(results, entityArr.pop());
             });
@@ -102,14 +108,14 @@ module.exports = function(client, callback) {
             limit = ' LIMIT ' + client.query['limit'];
         }
 
-        var userQuery = 'SELECT * FROM Post LEFT OUTER JOIN Postrating \
+        var userQuery = 'SELECT * FROM Post INNER JOIN Postrating \
         ON Post.id=Postrating.id WHERE forum=' + '"' 
         + client.query['forum'] + '"' + since + ' ORDER BY date ' + client.query['order'] + limit;
 
         connection.query(userQuery, [], function (err, results) {
             console.dir({query:results});
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 getRelated(results, entityArr.pop());
             }
@@ -125,10 +131,11 @@ module.exports = function(client, callback) {
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
+            message: 'Error!',
+            info: err
         } 
         client.context.data = response;
         callback();

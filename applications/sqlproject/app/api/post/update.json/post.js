@@ -1,5 +1,10 @@
-module.exports = function(client, callback) {
+//////also available:
+//var connection = client.application.databases.my_project.connection;
 
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
+module.exports = function(client, callback) {
     var data = JSON.parse(client.data);
     var connection = impress.conn;
 
@@ -9,17 +14,16 @@ module.exports = function(client, callback) {
         
         connection.query('UPDATE Post SET message=? WHERE id=?',
         [data.message, data.post], function (err, results) {
-            console.dir({query:results});
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 connection.queryRow('SELECT * FROM Post \
-                LEFT OUTER JOIN Postrating \
+                INNER JOIN Postrating \
                 ON Post.id=Postrating.id WHERE Post.id=?',
                 [data.post], function (err, row) {
                     console.dir({queryRow:row});
-                    if (err) {
-                        sendError();
+                    if (err || row === false) {
+                        sendError(err);
                     } else {
                         send(row);
                     }
@@ -37,10 +41,11 @@ module.exports = function(client, callback) {
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
+            message: 'Error!',
+            info: err
         } 
         client.context.data = response;
         callback();

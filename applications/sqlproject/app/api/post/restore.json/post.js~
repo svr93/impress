@@ -1,23 +1,27 @@
-module.exports = function(client, callback) {
+//////also available:
+//var connection = client.application.databases.my_project.connection;
 
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
+module.exports = function(client, callback) {
     var data = JSON.parse(client.data);
     var connection = impress.conn;
 
-    remove();
+    restore();
 
-    function remove() {
+    function restore() {
         
         connection.query('UPDATE Post SET isDeleted=false WHERE id=?',
         [data.post], function (err, results) {
-            console.dir({query:results});
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 connection.queryValue('SELECT id FROM Post WHERE id=?',
                 [data.post], function (err, value) {
                     console.dir({queryValue:value});
                     if (err) {
-                        sendError();
+                        sendError(err);
                     } else {
                         send(value);
                     }
@@ -33,16 +37,17 @@ module.exports = function(client, callback) {
                 'post': value
             }
         }
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
+            message: 'Error!',
+            info: err
         } 
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 }

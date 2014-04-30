@@ -1,10 +1,57 @@
-//also available:
+//*//*//also available:
 //var connection = client.application.databases.my_project.connection;
+
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
 module.exports = function(client, callback) {
     var data = JSON.parse(client.data);
     var connection = impress.conn;
  
     check();
+
+    function check() {
+        connection.queryRow('SELECT * FROM User WHERE email=?',
+        [data.user], function(err, row) {
+            if (err || row === false) {
+                sendError(err);
+            } else {
+                update(row['id']);
+            }
+        });
+    }
+
+    function update(id) {
+        connection.query('UPDATE User SET \
+        about=?, name=? WHERE id=?', [
+            data.about,
+            data.name,
+            id
+        ],
+        function (err, results) {
+            if (err) {
+                sendError(err);
+            } else {
+                selectUser(id);
+            }
+        });
+    }
+
+    function selectUser(id) {
+        connection.queryRow('SELECT * FROM User WHERE id=?',
+        [id], function(err, row) {
+            console.dir({queryRow:row});
+            if (err) {
+                sendError();
+            } else {
+                var extraUserInfoArr = 
+                ['followers', 'following', 'subscriptions'];
+
+                getMoreUserInfo(row, extraUserInfoArr,
+                extraUserInfoArr.pop());
+            }
+        });
+    }
 
     function getMoreUserInfo(user, extraUserInfoArr, key) {
         if (key === undefined) {
@@ -24,7 +71,7 @@ module.exports = function(client, callback) {
             }
             connection.queryCol(userQuery, [], function(err, arr) {
                 if (err) {
-                    sendError();
+                    sendError(err);
                 } else {
                     user[key] = arr;
                     getMoreUserInfo(user, extraUserInfoArr,
@@ -32,51 +79,6 @@ module.exports = function(client, callback) {
                 }
             });
         }
-    }
-
-    function check() {
-        connection.queryRow('SELECT * FROM User WHERE email=?',
-        [data.user], function(err, row) {
-            console.dir({queryRow:row});
-            if (err || row === false) {
-                sendError();
-            } else {
-                update();
-            }
-        });
-    }
-
-    function update() {
-        connection.query('UPDATE User SET \
-        about=?, name=? WHERE email=?', [
-            data.about,
-            data.name,
-            data.user
-        ],
-        function (err, results) {
-            console.dir({update:results});
-            if (err) {
-                sendError();
-            } else {
-                selectUser();
-            }
-        });
-    }
-
-    function selectUser() {
-        connection.queryRow('SELECT * FROM User WHERE email=?',
-        [data.user], function(err, row) {
-            console.dir({queryRow:row});
-            if (err) {
-                sendError();
-            } else {
-                var extraUserInfoArr = 
-                ['followers', 'following', 'subscriptions'];
-
-                getMoreUserInfo(row, extraUserInfoArr,
-                extraUserInfoArr.pop());
-            }
-        });
     }
 
     function send(row) {
@@ -88,10 +90,11 @@ module.exports = function(client, callback) {
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
+            message: 'Error!',
+            info: err
         } 
         client.context.data = response;
         callback();

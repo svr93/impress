@@ -1,4 +1,4 @@
-//also available:
+//////also available:
 //var connection = client.application.databases.my_project.connection;
 
 //console.dir - только главная информация
@@ -22,7 +22,7 @@ module.exports = function(client, callback) {
             limit = ' LIMIT ' + client.query['limit'];
         }
 
-        var userQuery = 'SELECT * FROM Post LEFT OUTER JOIN Postrating \
+        var userQuery = 'SELECT * FROM Post INNER JOIN Postrating \
         ON Post.id=Postrating.id WHERE thread=' + '"' 
         + client.query['thread'] + '"' + since + ' ORDER BY date '
         + client.query['order'] + limit;

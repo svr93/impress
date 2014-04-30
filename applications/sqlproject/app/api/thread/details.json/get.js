@@ -1,4 +1,4 @@
-//also available:
+//////also available:
 //var connection = client.application.databases.my_project.connection;
 
 //console.dir - только главная информация
@@ -97,12 +97,12 @@ module.exports = function(client, callback) {
     }
 
     function selectThread() {
-        connection.query('SELECT * FROM Thread LEFT OUTER JOIN Threadrating \
+        connection.query('SELECT * FROM Thread INNER JOIN Threadrating \
         ON Thread.id=Threadrating.id WHERE Thread.id=?',
         [client.query['thread']], function (err, results) {
         //получаю массив, а не строку, т.к. использую async.each
             console.dir({query:results});
-            if (err) {
+            if (err || (!results[0])) {
                 sendError(err);
             } else {
                 getMoreThreadInfo(results);

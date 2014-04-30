@@ -1,5 +1,10 @@
-module.exports = function(client, callback) {
+//////also available:
+//var connection = client.application.databases.my_project.connection;
+//insertId используется
+//console.dir - только главная информация
+//включена отправка информации об ошибках
 
+module.exports = function(client, callback) {
     var data = JSON.parse(client.data);
     if (!data.parent) {
         data.parent = null;
@@ -41,23 +46,10 @@ module.exports = function(client, callback) {
             data.user
         ],
         function (err, results) {
-            console.dir({insert:results});
             if (err) {
-                sendError();
+                sendError(err);
             } else {
-                selectMaxId();
-            }
-        });
-    }
-
-    function selectMaxId() {
-        connection.queryRow('SELECT MAX(id) FROM Post', [],
-        function(err, row) {
-            console.dir({queryRow:row});
-            if (err) {
-                sendError();
-            } else {
-                startRating(row['MAX(id)']);
+                startRating(results['insertId']);
             }
         });
     }
@@ -65,9 +57,8 @@ module.exports = function(client, callback) {
     function startRating(id) {
         connection.query('INSERT INTO Postrating (id) VALUES (?)', [id],
         function (err, results) {
-            console.dir({insert:results});
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 selectPost(id);
             }
@@ -79,7 +70,7 @@ module.exports = function(client, callback) {
         [id], function(err, row) {
             console.dir({queryRow:row});
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 send(row);
             }
@@ -95,10 +86,11 @@ module.exports = function(client, callback) {
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
+            message: 'Error!',
+            info: err
         } 
         client.context.data = response;
         callback();

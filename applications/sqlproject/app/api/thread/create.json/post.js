@@ -1,8 +1,7 @@
 //also available:
 //var connection = client.application.databases.my_project.connection;
-
+//insertId используется
 //console.dir - только главная информация
-//здесь select по MAX(id)
 //включена отправка информации об ошибках
 
 module.exports = function(client, callback) {
@@ -44,18 +43,7 @@ module.exports = function(client, callback) {
             if (err) {
                 sendError(err);
             } else {
-                selectMaxId();
-            }
-        });
-    }
-
-    function selectMaxId() {
-        connection.queryValue('SELECT MAX(id) FROM Thread', [],
-        function(err, value) {
-            if (err) {
-                sendError(err);
-            } else {
-                startRating(value);
+                startRating(results['insertId']);
             }
         });
     }

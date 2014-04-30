@@ -1,3 +1,9 @@
+//////also available:
+//var connection = client.application.databases.my_project.connection;
+
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
 module.exports = function(client, callback) {
     if (!client.query['order']) {
         client.query['order'] = 'desc';
@@ -58,7 +64,7 @@ module.exports = function(client, callback) {
             var userQuery = "";
 
             if (entity == 'thread') {
-                userQuery = 'SELECT * FROM Thread LEFT OUTER JOIN Threadrating \
+                userQuery = 'SELECT * FROM Thread INNER JOIN Threadrating \
                 ON Thread.id=Threadrating.id WHERE Thread.id=?';
             } else if (entity == 'forum') {
                 userQuery = 'SELECT * FROM Forum WHERE short_name=?';
@@ -102,7 +108,7 @@ module.exports = function(client, callback) {
             limit = ' LIMIT ' + client.query['limit'];
         }
 
-        var userQuery = 'SELECT * FROM Post LEFT OUTER JOIN Postrating \
+        var userQuery = 'SELECT * FROM Post INNER JOIN Postrating \
         ON Post.id=Postrating.id WHERE forum=' + '"' 
         + client.query['forum'] + '"' + since + ' ORDER BY date ' + client.query['order'] + limit;
 
@@ -121,7 +127,7 @@ module.exports = function(client, callback) {
             code: 0,
             response: results
         }
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 
@@ -130,7 +136,7 @@ module.exports = function(client, callback) {
             code: 1,
             message: 'Error!'
         } 
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 }

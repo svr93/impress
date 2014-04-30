@@ -1,3 +1,9 @@
+//////also available:
+//var connection = client.application.databases.my_project.connection;
+
+//console.dir - только главная информация
+//включена отправка информации об ошибках
+
 module.exports = function(client, callback) {
     if (!client.query['order']) {
         client.query['order'] = 'desc';
@@ -19,12 +25,12 @@ module.exports = function(client, callback) {
         var userQuery = "";
 
         if(!client.query['thread']) {
-            userQuery = 'SELECT * FROM Post LEFT OUTER JOIN Postrating \
+            userQuery = 'SELECT * FROM Post INNER JOIN Postrating \
             ON Post.id=Postrating.id WHERE forum=' + '"' 
             + client.query['forum'] + '"' + since + ' ORDER BY date ' 
             + client.query['order'] + limit;
         } else {
-            userQuery = 'SELECT * FROM Post LEFT OUTER JOIN Postrating \
+            userQuery = 'SELECT * FROM Post INNER JOIN Postrating \
             ON Post.id=Postrating.id WHERE thread=' + '"' 
             + client.query['thread'] + '"' + since + ' ORDER BY date ' 
             + client.query['order'] + limit;
@@ -33,7 +39,7 @@ module.exports = function(client, callback) {
         connection.query(userQuery, [], function (err, results) {
             console.dir({query:results});
             if (err) {
-                sendError();
+                sendError(err);
             } else {
                 send(results);
             }
@@ -49,10 +55,11 @@ module.exports = function(client, callback) {
         callback();
     }
 
-    function sendError() {
+    function sendError(err) {
         var response = {
             code: 1,
-            message: 'Error!'
+            message: 'Error!',
+            info: err
         } 
         client.context.data = response;
         callback();

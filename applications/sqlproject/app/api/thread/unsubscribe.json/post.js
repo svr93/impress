@@ -1,4 +1,4 @@
-//also available:
+//*//*//also available:
 //var connection = client.application.databases.my_project.connection;
 
 //console.dir - только главная информация
@@ -36,7 +36,7 @@ module.exports = function(client, callback) {
 
     function unsubscribe(user_id) {
         connection.query('DELETE FROM Subscribe WHERE \
-        user_id=? AND Thread_id=?', 
+        user_id=? AND thread_id=?', 
         [user_id, data.thread], function(err, results) {
             if (err) {
                 sendError(err);

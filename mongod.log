@@ -1,22 +1,42 @@
 ./mongodb/bin/mongod --help for help and startup options
-Wed Apr 30 13:44:18.605 [initandlisten] MongoDB starting : pid=8626 port=27017 dbpath=/data/db/ 64-bit host=VirtualBox
-Wed Apr 30 13:44:18.612 [initandlisten] db version v2.4.9
-Wed Apr 30 13:44:18.613 [initandlisten] git version: 52fe0d21959e32a5bdbecdc62057db386e4e029c
-Wed Apr 30 13:44:18.613 [initandlisten] build info: Linux ip-10-2-29-40 2.6.21.7-2.ec2.v1.2.fc8xen #1 SMP Fri Nov 20 17:48:28 EST 2009 x86_64 BOOST_LIB_VERSION=1_49
-Wed Apr 30 13:44:18.613 [initandlisten] allocator: tcmalloc
-Wed Apr 30 13:44:18.613 [initandlisten] options: {}
-Wed Apr 30 13:44:18.902 [initandlisten] exception in initAndListen: 10310 Unable to lock file: /data/db/mongod.lock. Is a mongod instance already running?, terminating
-Wed Apr 30 13:44:18.902 dbexit: 
-Wed Apr 30 13:44:18.902 [initandlisten] shutdown: going to close listening sockets...
-Wed Apr 30 13:44:18.902 [initandlisten] shutWed Apr 30 13:44:27.649 [initandlisten] connection accepted from 127.0.0.1:47075 #1 (1 connection now open)
-Wed Apr 30 13:44:27.755 [conn1] end connection 127.0.0.1:47075 (0 connections now open)
-Wed Apr 30 13:44:27.780 [initandlisten] connection accepted from 127.0.0.1:47077 #2 (1 connection now open)
-Wed Apr 30 13:44:27.786 [initandlisten] connection accepted from 127.0.0.1:47078 #3 (2 connections now open)
-Wed Apr 30 13:44:27.792 [initandlisten] connection accepted from 127.0.0.1:47079 #4 (3 connections now open)
-Wed Apr 30 13:44:27.797 [initandlisten] connection accepted from 127.0.0.1:47080 #5 (4 connections now open)
-Wed Apr 30 13:44:27.801 [initandlisten] connection accepted from 127.0.0.1:47081 #6 (5 connections now open)
-Wed Apr 30 14:11:27.448 [conn2] end connection 127.0.0.1:47077 (4 connections now open)
-Wed Apr 30 14:11:27.453 [conn3] end connection 127.0.0.1:47078 (3 connections now open)
-Wed Apr 30 14:11:27.457 [conn4] end connection 127.0.0.1:47079 (2 connections now open)
-Wed Apr 30 14:11:27.457 [conn5] end connection 127.0.0.1:47080 (1 connection now open)
-Wed Apr 30 14:11:27.458 [conn6] end connection 127.0.0.1:47081 (0 connections now open)
+Thu May  1 02:16:12.211 [initandlisten] MongoDB starting : pid=5128 port=27017 dbpath=/data/db/ 64-bit host=VirtualBox
+Thu May  1 02:16:12.218 [initandlisten] db version v2.4.9
+Thu May  1 02:16:12.218 [initandlisten] git version: 52fe0d21959e32a5bdbecdc62057db386e4e029c
+Thu May  1 02:16:12.218 [initandlisten] build info: Linux ip-10-2-29-40 2.6.21.7-2.ec2.v1.2.fc8xen #1 SMP Fri Nov 20 17:48:28 EST 2009 x86_64 BOOST_LIB_VERSION=1_49
+Thu May  1 02:16:12.218 [initandlisten] allocator: tcmalloc
+Thu May  1 02:16:12.218 [initandlisten] options: {}
+Thu May  1 02:16:12.326 [initandlisten] journal dir=/data/db/journal
+Thu May  1 02:16:12.327 [initandlisten] recover : no journal files present, no recovery needed
+Thu May  1 02:16:12.397 [initandlisten] waiting for connections on port 27017
+Thu May  1 02:16:12.420 [websvr] admin web console waiting for connections on port 28017
+Thu May  1 02:16:20.452 [initandlisten] connection accepted from 127.0.0.1:35845 #1 (1 connection now open)
+Thu May  1 02:16:20.540 [conn1] end connection 127.0.0.1:35845 (0 connections now open)
+Thu May  1 02:16:20.564 [initandlisten] connection accepted from 127.0.0.1:35847 #2 (1 connection now open)
+Thu May  1 02:16:20.585 [initandlisten] connection accepted from 127.0.0.1:35848 #3 (2 connections now open)
+Thu May  1 02:16:20.590 [initandlisten] connection accepted from 127.0.0.1:35849 #4 (3 connections now open)
+Thu May  1 02:16:20.594 [initandlisten] connection accepted from 127.0.0.1:35850 #5 (4 connections now open)
+Thu May  1 02:16:20.598 [initandlisten] connection accepted from 127.0.0.1:35851 #6 (5 connections now open)
+Thu May  1 02:43:49.947 [signalProcessingThread] got signal 2 (Interrupt), will terminate after current cmd ends
+Thu May  1 02:43:49.948 [signalProcessingThread] now exiting
+Thu May  1 02:43:49.948 dbexit: 
+Thu May  1 02:43:49.948 [signalProcessingThread] shutdown: going to close listening sockets...
+Thu May  1 02:43:49.948 [signalProcessingThread] closing listening socket: 9
+Thu May  1 02:43:49.948 [signalProcessingThread] closing listening socket: 10
+Thu May  1 02:43:49.948 [signalProcessingThread] closing listening socket: 11
+Thu May  1 02:43:49.948 [signalProcessingThread] removing socket file: /tmp/mongodb-27017.sock
+Thu May  1 02:43:49.948 [signalProcessingThread] shutdown: going to flush diaglog...
+Thu May  1 02:43:49.948 [signalProcessingThread] shutdown: going to close sockets...
+Thu May  1 02:43:49.948 [signalProcessingThread] shutdown: waiting for fs preallocator...
+Thu May  1 02:43:49.948 [signalProcessingThread] shutdown: lock for final commit...
+Thu May  1 02:43:49.948 [signalProcessingThread] shutdown: final commit...
+Thu May  1 02:43:49.950 [conn4] end connection 127.0.0.1:35849 (4 connections now open)
+Thu May  1 02:43:49.955 [conn2] end connection 127.0.0.1:35847 (4 connections now open)
+Thu May  1 02:43:49.955 [conn3] end connection 127.0.0.1:35848 (4 connections now open)
+Thu May  1 02:43:49.956 [conn5] end connection 127.0.0.1:35850 (4 connections now open)
+Thu May  1 02:43:49.956 [conn6] end connection 127.0.0.1:35851 (4 connections now open)
+Thu May  1 02:43:50.053 [signalProcessingThread] shutdown: closing all files...
+Thu May  1 02:43:50.053 [signalProcessingThread] closeAllFiles() finished
+Thu May  1 02:43:50.053 [signalProcessingThread] journalCleanup...
+Thu May  1 02:43:50.053 [signalProcessingThread] removeJournalFiles
+Thu May  1 02:43:50.077 [signalProcessingThread] shutdown: removing fs lock...
+Thu May  1 02:43:50.077 dbexit: really exiting now

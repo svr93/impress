@@ -1,4 +1,4 @@
-//also available:
+//////also available:
 //var connection = client.application.databases.my_project.connection;
 
 //console.dir - только главная информация
@@ -8,21 +8,21 @@ module.exports = function(client, callback) {
     var data = JSON.parse(client.data);
     var connection = impress.conn;
 
-    restore();
+    remove();
 
-    function restore() {       
-        connection.query('UPDATE Thread SET isDeleted=false WHERE id=?',
+    function remove() {       
+        connection.query('UPDATE Thread SET isDeleted=true WHERE id=?',
         [data.thread], function (err, results) {
             if (err) {
                 sendError(err);
             } else {
-                connection.queryValue('SELECT id FROM Thread WHERE id=?',
-                [data.thread], function (err, value) {
-                    console.dir({queryValue:value});
+                connection.queryRow('SELECT * FROM Thread WHERE id=?',
+                [data.thread], function (err, row) {
+                    console.dir({queryRow:row});
                     if (err) {
                         sendError(err);
                     } else {
-                        send(value);
+                        send(row['id']);
                     }
                 });
             }
@@ -36,7 +36,7 @@ module.exports = function(client, callback) {
                 'thread': value
             }
         }
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 
@@ -46,7 +46,7 @@ module.exports = function(client, callback) {
             message: 'Error!',
             info: err
         } 
-        client.context.data = JSON.stringify(response);
+        client.context.data = response;
         callback();
     }
 }

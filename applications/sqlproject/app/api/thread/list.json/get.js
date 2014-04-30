@@ -43,7 +43,7 @@ module.exports = function(client, callback) {
             } else {
                 async.each(results, function(elem, clbk) {
                     connection.queryValue('SELECT COUNT(*) FROM Post WHERE thread=?', 
-                    [results['id']], function(err, value) {
+                    [elem['id']], function(err, value) {
                         if (err) {
                             sendError(err);
                         } else {

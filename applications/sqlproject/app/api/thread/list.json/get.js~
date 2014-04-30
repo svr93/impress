@@ -1,4 +1,4 @@
-//also available:
+//////also available:
 //var connection = client.application.databases.my_project.connection;
 
 //console.dir - только главная информация
@@ -25,12 +25,12 @@ module.exports = function(client, callback) {
         var userQuery = "";
 
         if(!client.query['user']) {
-            userQuery = 'SELECT * FROM Thread LEFT OUTER JOIN Threadrating \
+            userQuery = 'SELECT * FROM Thread INNER JOIN Threadrating \
             ON Thread.id=Threadrating.id WHERE forum=' + '"' 
             + client.query['forum'] + '"' + since + ' ORDER BY date ' 
             + client.query['order'] + limit;
         } else {
-            userQuery = 'SELECT * FROM Thread LEFT OUTER JOIN Threadrating \
+            userQuery = 'SELECT * FROM Thread INNER JOIN Threadrating \
             ON Thread.id=Threadrating.id WHERE user=' + '"' 
             + client.query['user'] + '"' + since + ' ORDER BY date ' 
             + client.query['order'] + limit;

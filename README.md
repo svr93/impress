@@ -1,18 +1,13 @@
 Проект по СУБД
 =======
 
-https://github.com/tshemsedinov - создатель сервера
+https://github.com/tshemsedinov - разработчик сервера Impress, используемого в проекте
 
 Настройки:
 
-1) applications/sqlproject/config/databases.js - конфиг для БД;
+1) applications/sqlproject/config/databases.js - конфиг для БД (не используется в полной мере);
 
-2) содержимое /etc/hosts:
-
-127.0.0.1	localhost
-127.0.0.1       some.host.ru
-
-3) node_modules/impress/lib/impress.js (костыль):
+2) node_modules/impress/lib/impress.js (костыль, не самый последний вариант):
 
                 //svr93// My database connection
                 var mysql = require('mysql'),
@@ -33,7 +28,7 @@ https://github.com/tshemsedinov - создатель сервера
                 impress.conn.slowTime = 100; // ms
 
                 //svr93// end
-4) использование затем подключения (2 варианта):
+3) использование затем подключения (2 варианта):
 
                 var connection = impress.conn; //использование костыля
                 var connection = client.application.databases.<connection_name_in_databases.js>.connection;

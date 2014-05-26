@@ -1,5 +1,0 @@
-2014-04-30T08:46:35.933Z	Master(7649/C1N0)	1829ms	127.0.0.1	POST	http://localhost/api/clear.json	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/34.0.1847.116 Chrome/34.0.1847.116 Safari/537.36
-2014-04-30T20:17:51.585Z	Master(3656/C1N0)	1349ms	127.0.0.1	POST	http://localhost/api/clear.json	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/34.0.1847.116 Chrome/34.0.1847.116 Safari/537.36
-2014-04-30T20:20:38.209Z	Master(3995/C1N0)	1240ms	127.0.0.1	POST	http://localhost/api/clear.json	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/34.0.1847.116 Chrome/34.0.1847.116 Safari/537.36
-2014-04-30T20:26:24.771Z	Master(4200/C1N0)	1134ms	127.0.0.1	POST	http://localhost/api/clear.json	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/34.0.1847.116 Chrome/34.0.1847.116 Safari/537.36
-2014-04-30T23:03:17.313Z	Master(5788/C1N0)	1328ms	127.0.0.1	POST	http://localhost/api/clear.json	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/34.0.1847.116 Chrome/34.0.1847.116 Safari/537.36

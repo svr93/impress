@@ -1,0 +1,2 @@
+2014-05-26T01:42:38.339Z	Master(20231/C1N0)	{"fatal":true,"code":"PROTOCOL_CONNECTION_LOST"}
+2014-05-26T01:46:20.990Z	Master(20231/C1N0)	Error: Connection lost: The server closed the connection.; Protocol.end (/node_modules/mysql/lib/protocol/Protocol.js:78:13); Socket.<anonymous> (/node_modules/mysql/lib/Connection.js:78:28); Socket.EventEmitter.emit (events.js:117:20); _stream_readable.js:920:16; process._tickDomainCallback (node.js:459:13)

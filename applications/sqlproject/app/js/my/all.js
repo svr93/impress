@@ -82,7 +82,7 @@ function postList() {
         'since': '2000-01-01 00:00:00', //optional
         'limit': 3, //optional
         'order': 'asc', //optional
-        'thread': 3
+        'thread': 1
     }
     sendGet ("db/api/post/list/", data);
 }
@@ -216,7 +216,7 @@ function threadCreate() {
 function threadDetails() {
     var data = {
         'related': ['user', 'forum'], //optional
-        'thread': 10
+        'thread': 1
     }
     sendGet ("db/api/thread/details/", data);
 }
@@ -236,28 +236,28 @@ function threadListPosts() {
         'since': '2000-01-01 00:00:00', //optional
         'limit': 3, //optional
         'order': 'asc', //optional
-        'thread': 3
+        'thread': 1
     }
     sendGet ("db/api/thread/listPosts/", data);
 }
 //26) open - post
 function threadOpen() {
     var data = {
-        'thread': 3,
+        'thread': 1,
     }
     sendPost ("db/api/thread/open/", data);
 }
 //27) remove - post
 function threadRemove() {
     var data = {
-        'thread': 10
+        'thread': 1
     }
     sendPost ("db/api/thread/remove/", data);
 }
 //28) restore - post
 function threadRestore() {
     var data = {
-        'thread': 10
+        'thread': 1
     }
     sendPost ("db/api/thread/restore/", data);
 }
@@ -265,7 +265,7 @@ function threadRestore() {
 function threadSubscribe() {
     var data = {
         'user': 'svr93@i.ua',
-        'thread': 10
+        'thread': 1
     }
     sendPost ("db/api/thread/subscribe/", data);
 }
@@ -273,14 +273,14 @@ function threadSubscribe() {
 function threadUnsubscribe() {
     var data = {
         'user': 'svr93@i.ua',
-        'thread': 10
+        'thread': 1
     }
     sendPost ("db/api/thread/unsubscribe/", data);
 }
 //31) update - post
 function threadUpdate() {
     var data = {
-        'thread': 10,
+        'thread': 1,
         'message': 'Message2',
         'slug': 'slug2'
     }
@@ -289,7 +289,7 @@ function threadUpdate() {
 //32) vote - post
 function threadVote() {
     var data = {
-        'thread': 10,
+        'thread': 1,
         'vote': -1
     }
     sendPost ("db/api/thread/vote/", data);

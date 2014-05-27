@@ -32,6 +32,9 @@ module.exports = function(client, callback) {
             if (err) {
                 sendError(err);
             } else {
+                results.forEach(function(elem) {
+                    elem.points = elem.likes - elem.dislikes;
+                });
                 send(results);
             }
         });
@@ -56,4 +59,3 @@ module.exports = function(client, callback) {
         callback();
     }
 }
-

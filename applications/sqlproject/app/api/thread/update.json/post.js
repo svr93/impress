@@ -29,6 +29,7 @@ module.exports = function(client, callback) {
             if (err) {
                 sendError(err);
             } else {
+                row.points = row.likes - row.dislikes;
                 connection.queryValue('SELECT COUNT(*) FROM \
                 Post WHERE thread=?', [data.thread],
                 function(err, value) {
@@ -62,4 +63,3 @@ module.exports = function(client, callback) {
         callback();
     }
 }
-

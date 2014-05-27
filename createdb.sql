@@ -1,4 +1,3 @@
-/*with points*/
 DROP DATABASE IF EXISTS forums;
 CREATE DATABASE forums CHARACTER SET 'UTF8';
 USE forums;
@@ -20,7 +19,7 @@ CREATE TABLE Forum (
 	short_name VARCHAR(40) CHARACTER SET 'CP1251' NOT NULL UNIQUE, 
 	user VARCHAR(50) CHARACTER SET 'CP1251' NOT NULL, 
 	PRIMARY KEY(id),
-	FOREIGN KEY(user) REFERENCES User(email)
+	FOREIGN KEY(user) REFERENCES User(email),
 	KEY(short_name(20))
 );
 
@@ -70,7 +69,6 @@ CREATE TABLE Postrating (
         id MEDIUMINT NOT NULL,
         likes MEDIUMINT NOT NULL DEFAULT 0,
         dislikes MEDIUMINT NOT NULL DEFAULT 0,
-        points MEDIUMINT NOT NULL DEFAULT 0, /*BAD*/
         FOREIGN KEY(id) REFERENCES Post(id)
 ) ENGINE = MYISAM;
 
@@ -78,7 +76,6 @@ CREATE TABLE Threadrating (
         id MEDIUMINT NOT NULL,
         likes MEDIUMINT NOT NULL DEFAULT 0,
         dislikes MEDIUMINT NOT NULL DEFAULT 0,
-        points MEDIUMINT NOT NULL DEFAULT 0, /*BAD*/
         FOREIGN KEY(id) REFERENCES Thread(id)
 ) ENGINE = MYISAM;
 

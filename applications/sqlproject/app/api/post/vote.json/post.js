@@ -15,10 +15,10 @@ module.exports = function(client, callback) {
         var userQuery = "";
         if (data.vote == 1) {
             userQuery = 'UPDATE Postrating \
-            SET likes=likes+1, points=points+1 WHERE id=' + data.post;
+            SET likes=likes+1 WHERE id=' + data.post;
         } else {
             userQuery = 'UPDATE Postrating \
-            SET dislikes=dislikes+1, points=points-1 WHERE id=' + data.post;
+            SET dislikes=dislikes+1 WHERE id=' + data.post;
         }   
         
         connection.query(userQuery, [], function (err, results) {
@@ -33,6 +33,7 @@ module.exports = function(client, callback) {
                     if (err || row === false) {
                         sendError(err);
                     } else {
+                        row.points = row.likes - row.dislikes;
                         send(row);
                     }
                 });

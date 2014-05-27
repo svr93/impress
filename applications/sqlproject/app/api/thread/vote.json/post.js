@@ -14,10 +14,10 @@ module.exports = function(client, callback) {
         var userQuery = "";
         if (data.vote == 1) {
             userQuery = 'UPDATE Threadrating \
-            SET likes=likes+1, points=points+1 WHERE id=' + data.thread;
+            SET likes=likes+1 WHERE id=' + data.thread;
         } else {
             userQuery = 'UPDATE Threadrating \
-            SET dislikes=dislikes+1, points=points-1 WHERE id=' + data.thread;
+            SET dislikes=dislikes+1 WHERE id=' + data.thread;
         }   
         
         connection.query(userQuery, [], function (err, results) {
@@ -37,6 +37,7 @@ module.exports = function(client, callback) {
             if (err) {
                 sendError(err);
             } else {
+                row.points = row.likes - row.dislikes;
                 connection.queryValue('SELECT COUNT(*) FROM \
                 Post WHERE thread=?', [data.thread],
                 function(err, value) {
@@ -70,4 +71,3 @@ module.exports = function(client, callback) {
         callback();
     }
 }
-

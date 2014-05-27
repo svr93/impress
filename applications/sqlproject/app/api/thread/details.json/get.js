@@ -105,6 +105,7 @@ module.exports = function(client, callback) {
             if (err || (!results[0])) {
                 sendError(err);
             } else {
+                results[0].points = results[0].likes - results[0].dislikes;
                 getMoreThreadInfo(results);
             }
         });
@@ -129,4 +130,3 @@ module.exports = function(client, callback) {
         callback();
     }
 }
-

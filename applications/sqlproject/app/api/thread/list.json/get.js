@@ -42,6 +42,7 @@ module.exports = function(client, callback) {
                 sendError(err);
             } else {
                 async.each(results, function(elem, clbk) {
+                    elem.points = elem.likes - elem.dislikes;
                     connection.queryValue('SELECT COUNT(*) FROM Post WHERE thread=?', 
                     [elem['id']], function(err, value) {
                         if (err) {

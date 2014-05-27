@@ -25,6 +25,7 @@ module.exports = function(client, callback) {
                     if (err || row === false) {
                         sendError(err);
                     } else {
+                        row.points = row.likes - row.dislikes;
                         send(row);
                     }
                 });
@@ -51,4 +52,3 @@ module.exports = function(client, callback) {
         callback();
     }
 }
-

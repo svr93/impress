@@ -80,11 +80,13 @@ module.exports = function(client, callback) {
                     } else {
                         elem[entity] = row;
                         if (entity == 'thread') {
+                            elem[entity].points = elem[entity].likes - elem[entity].dislikes;
                             getMoreThreadInfo(elem[entity], clbk);
                         } else if (entity == 'user') {
                             var extraUserInfoArr = ['followers', 'following', 'subscriptions'];
                             getMoreUserInfo(elem[entity], extraUserInfoArr, extraUserInfoArr.pop(), clbk);
                         } else {
+                            elem.points = elem.likes - elem.dislikes;
                             clbk();
                         }
                     }
@@ -141,4 +143,3 @@ module.exports = function(client, callback) {
         callback();
     }
 }
-

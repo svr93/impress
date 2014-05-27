@@ -87,7 +87,6 @@ module.exports = function(client, callback) {
                             getMoreUserInfo(elem[entity], extraUserInfoArr,
                             extraUserInfoArr.pop(), clbk);
                         } else {
-                            elem.points = elem.likes - elem.dislikes;
                             clbk();
                         }
                     }
@@ -109,6 +108,7 @@ module.exports = function(client, callback) {
             if (err) {
                 sendError(err);
             } else {
+                results[0].points = results[0].likes - results[0].dislikes;
                 getRelated(results, entityArr.pop());
             }
         });
